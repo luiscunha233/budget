@@ -1,9 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
- 
-type Fact = {
-  fact: string, length: number
-}
- 
+import { NextApiRequest, NextApiResponse } from "next";
+
+
 import { MongoClient } from 'mongodb';
 
 const uri = 'mongodb://luis:budget123@localhost:27017/';
@@ -23,13 +20,13 @@ export async function connectToDatabase() {
   return db;
 }
 
-
-
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Fact>
-) {
-  const db = await connectToDatabase();
-  const data = await db.collection('expenses').find().toArray();
-  res.status(200).json(data)
-}
+    req: NextApiRequest,
+    res: NextApiResponse<any>
+  ) {
+    if(req.method == 'POST'){
+        const db = await connectToDatabase();
+        const data = await db.collection('expenses').insertOne(req.body);
+    }
+    
+  }

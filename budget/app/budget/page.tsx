@@ -13,12 +13,27 @@ import {CalendarPlus, Plus,Trash2} from "lucide-react"
 import { DataTable } from "@/components/DataTable";
 import { BudgetCard } from "./budgetCard";
 import { Label } from "@/components/ui/label";
+import { ObjectId } from "mongodb";
 
 type Props = {};
 
 interface Fact {
-  fact:string,
-  length:number
+  _id: ObjectId
+  fact: string
+}
+
+async function setFact(){
+
+      fetch('/api/budget/add', {
+        method: 'POST',
+        body: JSON.stringify({
+          test:"test"
+        }),
+        headers: {
+            'Content-type': 'application/json'
+        }
+    })
+
 }
 
  
@@ -30,7 +45,7 @@ export default function BudgetPage({ }: Props) {
     const fetchData = async () => {
       const response = await fetch('/api/income');
       const data = await response.json();
-      setData(data);
+      setData(data[0]);
     };
     fetchData();
   }, []);
@@ -51,7 +66,7 @@ export default function BudgetPage({ }: Props) {
         </TabsList>
       </Tabs>
       <div className="space-x-2">
-        <Button variant="ghost" name="Add" className="space-x-2"><Label>Add</Label><Plus/></Button>
+        <Button variant="ghost" name="Add" className="space-x-2" onClick={()=>setFact()}><Label>Add</Label><Plus/></Button>
         <Button variant="ghost" name="Remove" className="space-x-2"><Label>Remove</Label><Trash2/></Button>
         </div>
       <div className="flex flex-wrap">
