@@ -5,12 +5,13 @@ import {
     ChevronRight,
     LayoutDashboard,
     Settings,
-    ShoppingCart,
-    UsersRound,
+    ReceiptEuro,
+    ArrowBigUp,
   } from "lucide-react"
 import { Button } from './button'
 import Image from 'next/image'
 import { useWindowWidth } from '@react-hook/window-size'
+import {ThemeModeToggle} from './dark-theme-button'
 
 type Props = {}
 
@@ -46,15 +47,9 @@ export default function Sidebar({}: Props) {
                     variant: "default",
                     },
                     {
-                    title: "Users",
-                    href: "/users",
-                    icon: UsersRound,
-                    variant: "ghost",
-                    },
-                    {
-                    title: "Orders",
-                    href: "/orders",
-                    icon: ShoppingCart,
+                    title: "Budget",
+                    href: "/budget",
+                    icon: ReceiptEuro,
                     variant: "ghost",
                     },
                     {
@@ -65,6 +60,9 @@ export default function Sidebar({}: Props) {
                     },
                 ]}
             />
+            <div className="flex justify-center max-w-lg flex-col mx-auto">
+            <ThemeModeToggle ></ThemeModeToggle>
+            </div>
         </div>
     )
 }
