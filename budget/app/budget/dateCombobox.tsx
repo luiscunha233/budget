@@ -32,9 +32,18 @@ export interface ComboxboxProps {
     onSelect: (value: string) => void;
 }
 export function DateCombobox(props : ComboxboxProps) {
+
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
-  props.onSelect((props.data && props.data.length > 0 ? props.data[0].label : props.placeholder));
+  const firstRender = React.useRef(true);
+
+  React.useEffect(() => {
+    if(firstRender.current && props.data && props.data.length > 0){
+      props.onSelect(props.data[0].value);
+      firstRender.current = false;
+    }
+  }, [props]);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -57,7 +66,7 @@ export function DateCombobox(props : ComboxboxProps) {
             <CommandEmpty>No dates found.</CommandEmpty>
             <CommandGroup>
               {props.data?.map((framework) => (
-                <CommandItem
+                <CommandItem 
                   key={framework.value}
                   value={framework.value}
                   onSelect={(currentValue) => {

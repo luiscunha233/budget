@@ -10,7 +10,7 @@ export interface Budget extends WithId<Document> {
     endDate:Date,
 } 
 
-export interface Transcation{
+export interface Transcation extends WithId<Document>{
     value:number,
     budgetId:ObjectId,
     name:string,
@@ -19,7 +19,7 @@ export interface Transcation{
     account:Account
 }
 
-export interface Account{
+export interface Account extends WithId<Document>{
     name:string,
     balance:number,
     type:string
