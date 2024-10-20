@@ -7,45 +7,40 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { Combobox } from "@/components/ui/combobox";
+import { ComboxboxValue, DateCombobox } from "@/app/budget/dateCombobox";
 import { Button } from "@/components/ui/button";
 import {CalendarPlus, Plus,Trash2} from "lucide-react"
 import { DataTable } from "@/components/DataTable";
 import { BudgetCard } from "./budgetCard";
 import { Label } from "@/components/ui/label";
 import { ObjectId } from "mongodb";
+import { Budget } from "@/model/model";
+import { BudgetAddDialog } from "./addBudgetDialog";
 
 type Props = {};
 
-interface Fact {
-  _id: ObjectId
-  fact: string
+function comboxDateMaper(entry:Budget){
+  let entryDate = new Date(entry.startDate);
+  return { 
+    value : entry.startDate, 
+    label: entryDate.toLocaleDateString(undefined,{month:"long",year:"numeric"})}
 }
-
-async function setFact(){
-
-      fetch('/api/budget/add', {
-        method: 'POST',
-        body: JSON.stringify({
-          test:"test"
-        }),
-        headers: {
-            'Content-type': 'application/json'
-        }
-    })
-
-}
-
  
 export default function BudgetPage({ }: Props) {
 
-  const [data, setData] = useState<Fact>();
+  const [data, setData] = useState<ComboxboxValue[]>();
+  const [budgets, setBudgets] = useState<Budget[]>();
+  const [budgetType,setBudgetType] = useState<string>("income");
+  const [budgetDate,setBudgetDate] = useState<string>();
+
+
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/api/income');
+      const response = await fetch('/api/budget/all');
       const data = await response.json();
-      setData(data[0]);
+      setBudgets(data as Budget[]);
+      setData(data.map(comboxDateMaper));
     };
     fetchData();
   }, []);
@@ -53,12 +48,10 @@ export default function BudgetPage({ }: Props) {
 
   return (
     <div className="flex flex-col gap-5  w-full">
-      <Label>{data?.fact}</Label>
       <div className="flex flex-row">
-        <div className="flex basis-1 "><Combobox data={[]} placeholder="Date"></Combobox></div>
-        <div className="flex basis-1" > <Button variant="ghost" name="Add"><CalendarPlus/></Button></div>
+        <div className="flex basis-1"><DateCombobox data={data} onSelect={(value)=>setBudgetDate(value)} placeholder="Date" empty="Date"></DateCombobox></div>
       </div>
-      <Tabs defaultValue="income" className="w-[300px]">
+      <Tabs onValueChange={setBudgetType} defaultValue="income" className="w-[300px]">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="income">Income</TabsTrigger>
           <TabsTrigger value="expenses">Expenses</TabsTrigger>
@@ -66,14 +59,12 @@ export default function BudgetPage({ }: Props) {
         </TabsList>
       </Tabs>
       <div className="space-x-2">
-        <Button variant="ghost" name="Add" className="space-x-2" onClick={()=>setFact()}><Label>Add</Label><Plus/></Button>
+        <BudgetAddDialog type={budgetType} date={budgetDate} />
         <Button variant="ghost" name="Remove" className="space-x-2"><Label>Remove</Label><Trash2/></Button>
         </div>
       <div className="flex flex-wrap">
-        <BudgetCard></BudgetCard>
-        <BudgetCard></BudgetCard>
-        <BudgetCard></BudgetCard>
-        <BudgetCard></BudgetCard>
+        {budgetType} {budgetDate} 
+        {/*<BudgetCard></BudgetCard>*/}
       </div>
     </div>
   );
