@@ -10,25 +10,28 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Budget } from "@/model/model"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 import { start } from "repl"
 
 export interface BudgetAddDialogProps {
   date: string | undefined,
-  type: string
+  type: string,
+  setBudgets: (budgets: Budget[]) => void
 }
 
 export function BudgetAddDialog(props: BudgetAddDialogProps) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [goal, setGoal] = useState(0);
+  const [open, setOpen] = useState(false);
 
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost">Add <Plus className="mx-1" /></Button>
+        <Button variant="ghost">Add Budget <Plus className="mx-1" /></Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -59,18 +62,24 @@ export function BudgetAddDialog(props: BudgetAddDialogProps) {
         </div>
         <DialogFooter >
           <Button onClick={async ()=>{
-            await fetch("/api/budget/add",{
+            let data ={
+              category:category,
+              name:name,
+              goal:goal,
+              type:props.type == 'all' ? 'expenses' : props.type,
+              startDate:props.date,
+              endDate:props.date
+            }
+            setOpen(false);
+            let result = await fetch("/api/budget/add",{
               method:'POST',
               headers:{'Content-Type':'application/json'},
-              body: JSON.stringify({
-                category:category,
-                name:name,
-                goal:goal,
-                type:props.type,
-                startDate:props.date,
-                endDate:props.date
-              })
-            })}}>Add</Button>
+              body: JSON.stringify(data)
+            })
+            let budgets = await result.json();
+            console.log(budgets);
+            props.setBudgets(budgets as Budget[]);
+            }}>Add</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

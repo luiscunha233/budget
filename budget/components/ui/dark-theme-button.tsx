@@ -14,7 +14,7 @@ export function ThemeModeToggle() {
   const { setTheme } = useTheme()
  
   return (
-    <div className="self-center">
+ 
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
@@ -32,6 +32,6 @@ export function ThemeModeToggle() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-    </div>
+
   )
 }

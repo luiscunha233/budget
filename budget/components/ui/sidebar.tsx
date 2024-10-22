@@ -7,22 +7,22 @@ import {
     Settings,
     ReceiptEuro,
     ArrowBigUp,
-  } from "lucide-react"
+} from "lucide-react"
 import { Button } from './button'
 import Image from 'next/image'
 import { useWindowWidth } from '@react-hook/window-size'
-import {ThemeModeToggle} from './dark-theme-button'
+import { ThemeModeToggle } from './dark-theme-button'
 
 type Props = {}
 
-export default function Sidebar({}: Props) {
+export default function Sidebar({ }: Props) {
 
     const [isCollapsed, setIsCollapsed] = React.useState(false)
 
     const onlyWidth = useWindowWidth()
     const mobileWidth = onlyWidth < 768
 
-    function toggleSidebar(){
+    function toggleSidebar() {
         setIsCollapsed(!isCollapsed)
     }
     return (
@@ -30,38 +30,43 @@ export default function Sidebar({}: Props) {
             {!mobileWidth &&
                 <div className='absolute right-[-20px] top-7'>
                     <Button variant='secondary' className='rounded-full p-2' onClick={toggleSidebar}>
-                        <ChevronRight/>
+                        <ChevronRight />
                     </Button>
                 </div>
             }
             <div className="flex justify-center max-w-lg flex-col mx-auto">
-            <Image src="/images/iron-patriot.png" width={50} height={50} alt="" className="self-center" />
+                <Image src="/images/iron-patriot.png" width={50} height={50} alt="" className="self-center" />
             </div>
             <Nav
                 isCollapsed={mobileWidth ? true : isCollapsed}
                 links={[
                     {
-                    title: "Dashboard",
-                    href: "/",
-                    icon: LayoutDashboard,
-                    variant: "default",
+                        title: "Dashboard",
+                        href: "/",
+                        icon: LayoutDashboard,
+                        variant: "default",
                     },
                     {
-                    title: "Budget",
-                    href: "/budget",
-                    icon: ReceiptEuro,
-                    variant: "ghost",
+                        title: "Budget",
+                        href: "/budget",
+                        icon: ReceiptEuro,
+                        variant: "ghost",
                     },
                     {
-                    title: "Settings",
-                    href: "/settings",
-                    icon: Settings,
-                    variant: "ghost",
+                        title: "Settings",
+                        href: "/settings",
+                        icon: Settings,
+                        variant: "ghost",
                     },
                 ]}
             />
-            <div className="flex justify-center max-w-lg flex-col mx-auto">
-            <ThemeModeToggle ></ThemeModeToggle>
+            <div className="absolute bottom-0 left-0 right-0">
+                <div className='flex justify-center my-4'>
+                    <ThemeModeToggle ></ThemeModeToggle>
+                </div>
+                <div className='flex justify-center my-4'>
+                    <h4 className='text-s'>v0.0.0</h4>
+                </div>
             </div>
         </div>
     )

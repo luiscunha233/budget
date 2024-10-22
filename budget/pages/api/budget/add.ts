@@ -7,6 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const db = await connectToDatabase();
-  const data = await db.collection('Budget').insertOne(req.body)
+  await db.collection('Budget').insertOne(req.body)
+  const data = await db.collection('Budget').find().toArray()
   res.status(200).json(data)
 }
