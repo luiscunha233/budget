@@ -1,26 +1,30 @@
 import { ObjectId, WithId } from "mongodb";
 
 export interface Budget extends WithId<Document> {
-    ObjectId:ObjectId,
-    category:string,
-    name:string,
-    type:string,
-    goal:number,
-    startDate:Date,
-    endDate:Date,
-} 
-
-export interface Transcation extends WithId<Document>{
-    value:number,
-    budgetId:ObjectId,
-    name:string,
-    date:Date,
-    isPayed:boolean,
-    account:Account
+    name: string,
+    goal: number,
+    date: Date
 }
 
-export interface Account extends WithId<Document>{
-    name:string,
-    balance:number,
-    type:string
+export interface BudgetGroup extends WithId<Document> {
+    name: string,
+    budgets: ObjectId[],
+    type: string
+}
+
+export interface Transcation extends WithId<Document> {
+    value: number,
+    bill: boolean,
+    budgetId: ObjectId,
+    name: string,
+    date: Date,
+    isPayed: boolean,
+    account: ObjectId,
+    recurrency: string
+}
+
+export interface Account extends WithId<Document> {
+    name: string,
+    balance: number,
+    type: string
 }
