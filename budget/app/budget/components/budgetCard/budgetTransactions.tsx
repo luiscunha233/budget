@@ -20,7 +20,7 @@ export function BudgetTransactions(props: BudgetTransactionsProp) {
         <div className="flex flex-col w-full mx-4 mt-10">
             <div><h1 className="text-xl font-semibold">Transactions</h1></div>
             <div className="w-[calc(100%-3rem)]"><Separator className="my-4" /></div>
-            <ScrollArea className="w-[calc(100%-3rem)] h-96 pr-4">
+            <ScrollArea className={`w-[calc(100%-3rem)] h-${props.transactions.length > 5 ? "96" : (16*length).toString()} pr-4`}>
                 {props.transactions.map((transaction)=> <div>
                     <BudgetTransactionItem transaction={transaction}/>
                     <div className="w-full"><Separator className="my-4" /></div>

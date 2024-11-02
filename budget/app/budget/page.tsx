@@ -1,27 +1,15 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Tabs,
-  TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { ComboxboxValue, DateCombobox } from "@/app/budget/components/dateCombobox";
-import { Button } from "@/components/ui/button";
-import { CalendarPlus, Plus, Trash2 } from "lucide-react"
-import { DataTable } from "@/components/DataTable";
-import { BudgetCard } from "./components/budgetCard/budgetCard";
-import { Label } from "@/components/ui/label";
-import { ObjectId } from "mongodb";
-import { Budget, BudgetGroup } from "@/model/model";
-import { BudgetAddDialog } from "./dialogs/addBudgetDialog";
-import { parse, newValidDate } from "ts-date/esm/locale/en";
+import { BudgetGroup } from "@/model/model";
+import { newValidDate } from "ts-date/esm/locale/en";
 import { BudgetList } from "./components/budgetCard/budgetList";
-
-type Props = {};
-
-
 
 function comboxDatesInitializer(loadedDates: ComboxboxValue[]) {
 
@@ -47,7 +35,7 @@ function comboxDatesInitializer(loadedDates: ComboxboxValue[]) {
 }
 
 
-export default function BudgetPage({ }: Props) {
+export default function BudgetPage() {
 
   const [data, setComboxData] = useState<ComboxboxValue[]>([]);
   const [budgetgroups, setBudgetGroups] = useState<BudgetGroup[]>();
