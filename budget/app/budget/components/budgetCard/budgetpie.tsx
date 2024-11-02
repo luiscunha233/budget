@@ -1,3 +1,5 @@
+"use client";
+
 import { ResponsivePie } from "@nivo/pie";
 
 export function BudgetPie(props: any) {

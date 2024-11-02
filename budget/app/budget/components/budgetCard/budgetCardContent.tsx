@@ -1,3 +1,5 @@
+"use client";
+
 import { Budget } from "@/model/model";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { BudgetCardInfo } from "./budgetCardInfo";
@@ -27,13 +29,13 @@ export function BudgetCardContent(props: budgetCardContentProp) {
             <BudgetBadge text="Remaining" value={900.1}></BudgetBadge>
             </div>
             <div className="flex flex-row justify-between">
-            <Button variant="ghost" className="mx-1"><DiamondPlus size={20}/></Button>
-            <Button variant="ghost" className="mx-1"><Pencil size={20} /></Button>
-            <Button variant="ghost" className="mx-1"><Trash2 size={20}/></Button>
-            <Button variant="ghost" className="mx-1"><Settings2 size={20}/></Button>
+            <Button variant="ghost" size="icon"><DiamondPlus size={18}/></Button>
+            <Button variant="ghost" size="icon"><Pencil size={18} /></Button>
+            <Button variant="ghost" size="icon"><Trash2 size={18}/></Button>
+            <Button variant="ghost" size="icon"><Settings2 size={18}/></Button>
             </div>
             <div className="basis-auto">
-            <Button onClick={() => setOpen(!open)} variant="ghost">{open ? <ChevronsUp size={24} strokeWidth={2}/> : <ChevronsDown size={24} strokeWidth={2}/>}</Button>
+            <Button onClick={() => setOpen(!open)} size="icon" variant="ghost">{open ? <ChevronsUp size={24} strokeWidth={2}/> : <ChevronsDown size={24} strokeWidth={2}/>}</Button>
             </div>
         </div>
         {open && <BudgetTransactions budget={props.budget}/>}

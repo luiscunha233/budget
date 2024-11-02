@@ -1,5 +1,6 @@
 
-import Card from "@/components/card"
+"use client";
+
 import { Label } from "@/components/ui/label";
 import { Budget, BudgetGroup } from "@/model/model"
 import { BudgetCard } from "./budgetCard";

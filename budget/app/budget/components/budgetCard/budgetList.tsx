@@ -1,3 +1,5 @@
+"use client";
+
 import { Budget, BudgetGroup } from "@/model/model"
 import { BudgetCard } from "./budgetCard"
 import { ScrollArea } from "@/components/ui/scroll-area"

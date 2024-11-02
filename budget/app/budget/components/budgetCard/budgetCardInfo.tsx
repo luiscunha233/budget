@@ -1,4 +1,4 @@
-"use cli"
+"use client";
 
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
