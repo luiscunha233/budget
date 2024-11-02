@@ -16,7 +16,7 @@ interface BudgetListProps {
 
 export function BudgetList(props: BudgetListProps) {
     return (
-        <ScrollArea className="w-full h-[calc(100vh-230px)]">
+        <ScrollArea className="w-full h-[calc(100vh-233px)]">
             {
                 props.budgetGroups?.map((budgetGroup) => {
                     if (props.budgetType === budgetGroup.type || props.budgetType === "all") {

@@ -12,7 +12,7 @@ export interface BudgetGroup extends WithId<Document> {
     type: string
 }
 
-export interface Transcation extends WithId<Document> {
+export interface Transaction extends WithId<Document> {
     value: number,
     bill: boolean,
     budgetId: ObjectId,

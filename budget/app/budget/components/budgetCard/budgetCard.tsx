@@ -26,9 +26,7 @@ export function BudgetCard(props: BudgetCardProps) {
   
   return (
     <Card className="mb-4 w-[calc(100%-15px)]">
-      <CardContent className="m-4 py-4">
-        <BudgetCardContent budget={props.budget} />
-      </CardContent>
+      <BudgetCardContent budget={props.budget} />
     </Card>
   )
 }

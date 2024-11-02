@@ -10,8 +10,12 @@ interface BudgetGroupProps {
 }
 
 async function getBudgets(budgetGroup: BudgetGroup): Promise<Budget[]>{
-
-    return await fetch('/api/budget/all').then((res) => res.json())
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ budgets: budgetGroup.budgets })
+    }
+    return await fetch('/api/budget/list',requestOptions).then((res) => res.json())
 }
 
 
