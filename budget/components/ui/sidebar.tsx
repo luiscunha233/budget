@@ -35,8 +35,9 @@ export default function Sidebar({ }: Props) {
                 </div>
             }
             <div className="flex justify-center max-w-lg flex-col mx-auto">
-                <Image src="/images/iron-patriot.png" width={50} height={50} alt="" className="self-center" />
+                <Image src="/images/iron-patriot.png" width={35} height={35} alt="" className="self-center" />
             </div>
+            <div className={isCollapsed ? "" :"mr-2"}>
             <Nav
                 isCollapsed={mobileWidth ? true : isCollapsed}
                 links={[
@@ -60,12 +61,13 @@ export default function Sidebar({ }: Props) {
                     },
                 ]}
             />
+            </div>
             <div className="absolute bottom-0 left-0 right-0">
                 <div className='flex justify-center my-4'>
                     <ThemeModeToggle ></ThemeModeToggle>
                 </div>
                 <div className='flex justify-center my-4'>
-                    <h4 className='text-s'>v0.0.0</h4>
+                    <h4 className='text-xs'>v0.0.0</h4>
                 </div>
             </div>
         </div>

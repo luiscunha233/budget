@@ -11,8 +11,9 @@ import { Budget } from "@/model/model"
 import { ResponsivePie } from '@nivo/pie'
 import { BudgetPie } from "./budgetpie"
 import { Progress } from "@/components/ui/progress"
-import { BudgetCardTitle } from "./budgetCardTitle"
+import { BudgetCardContent } from "./budgetCardContent"
 import { Plus } from "lucide-react"
+
 
 interface BudgetCardProps {
   budget: Budget
@@ -20,13 +21,11 @@ interface BudgetCardProps {
 
 
 export function BudgetCard(props: BudgetCardProps) {
+  
   return (
-    <Card className="mx-4 my-4">
-      <CardContent className=" p-4">
-        <div></div>
-      <Progress value={15} />
-          <Button variant="ghost" name="Add" className="space-x-2"><Label>Transaction </Label><Plus /></Button>
-
+    <Card className="mb-4 w-[calc(100%-15px)]">
+      <CardContent className="m-4 py-4">
+        <BudgetCardContent budget={props.budget} />
       </CardContent>
     </Card>
   )
