@@ -11,9 +11,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Budget } from "@/model/model"
-import { Plus } from "lucide-react"
+import { Group, Plus } from "lucide-react"
 import { useState } from "react"
-import { start } from "repl"
 
 export interface BudgetAddDialogProps {
   date: string | undefined,
@@ -31,7 +30,7 @@ export function BudgetAddDialog(props: BudgetAddDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost">Add Budget <Plus className="mx-1" /></Button>
+        <Button variant="ghost" size="sm" className="space-x-2"><Plus size={16}/><span>Add Budget Group</span></Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
