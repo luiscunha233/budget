@@ -10,6 +10,7 @@ import { ComboxboxValue, DateCombobox } from "@/app/budget/components/dateCombob
 import { BudgetGroup } from "@/model/model";
 import { newValidDate } from "ts-date/esm/locale/en";
 import { BudgetList } from "./components/budgetCard/budgetList";
+import { BudgetAddDialog } from "./dialogs/addBudgetDialog";
 
 function comboxDatesInitializer(loadedDates: ComboxboxValue[]) {
 
@@ -69,6 +70,7 @@ export default function BudgetPage() {
           <DateCombobox data={data} onSelect={(value) => setBudgetDate(value)} placeholder="Date" empty="Date" />
         </div>
       </div>
+      <div className="flex flex-row space-x-5">
       <Tabs onValueChange={setBudgetType} defaultValue="all" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="all">All</TabsTrigger>
@@ -77,9 +79,7 @@ export default function BudgetPage() {
           <TabsTrigger value="investments">Investments</TabsTrigger>
         </TabsList>
       </Tabs>
-      <div className="space-x-2">
-        {/*<BudgetAddDialog type={budgetType} date={budgetDate} setBudgets={setBudgets} />*/}
-
+      <BudgetAddDialog type={budgetType} date={budgetDate} setBudgets={()=>{}} />
       </div>
       <BudgetList budgetGroups={budgetgroups} budgetType={budgetType} />
     </div>
