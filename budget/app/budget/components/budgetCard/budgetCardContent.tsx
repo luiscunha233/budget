@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Budget, Transaction } from "@/model/model";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"

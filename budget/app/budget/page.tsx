@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import React, { useEffect, useState } from "react";
 import {
@@ -10,7 +10,7 @@ import { ComboxboxValue, DateCombobox } from "@/app/budget/components/dateCombob
 import { BudgetGroup } from "@/model/model";
 import { newValidDate } from "ts-date/esm/locale/en";
 import { BudgetList } from "./components/budgetCard/budgetList";
-import { BudgetAddDialog } from "./dialogs/addBudgetDialog";
+import { BudgetGroupAddDialog } from "./dialogs/addBudgetGroupDialog";
 
 function comboxDatesInitializer(loadedDates: ComboxboxValue[]) {
 
@@ -79,7 +79,7 @@ export default function BudgetPage() {
           <TabsTrigger value="investments">Investments</TabsTrigger>
         </TabsList>
       </Tabs>
-      <BudgetAddDialog type={budgetType} date={budgetDate} setBudgets={()=>{}} />
+      <BudgetGroupAddDialog type={budgetType} date={budgetDate} setBudgetGroups={setBudgetGroups} />
       </div>
       <BudgetList budgetGroups={budgetgroups} budgetType={budgetType} />
     </div>

@@ -5,8 +5,7 @@ import {
     ChevronRight,
     LayoutDashboard,
     Settings,
-    ReceiptEuro,
-    ArrowBigUp,
+    ReceiptEuro
 } from "lucide-react"
 import { Button } from './button'
 import Image from 'next/image'

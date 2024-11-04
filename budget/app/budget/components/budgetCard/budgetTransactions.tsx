@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Separator } from "@/components/ui/separator"
 import { Budget, Transaction } from "@/model/model"
