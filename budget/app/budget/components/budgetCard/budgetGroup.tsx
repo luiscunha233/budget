@@ -4,24 +4,41 @@ import { Label } from "@/components/ui/label";
 import { Budget, BudgetGroup } from "@/model/model"
 import { BudgetCard } from "./budgetCard";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import { AddBudgetDialog } from "../../dialogs/addBudgetDialog";
 interface BudgetGroupProps {
     budgetGroup: BudgetGroup
 }
 
-async function getBudgets(budgetGroup: BudgetGroup): Promise<Budget[]>{
+async function getBudgets(budgetGroup: BudgetGroup): Promise<Budget[]> {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ budgets: budgetGroup.budgets })
     }
-    return await fetch('/api/budget/list',requestOptions).then((res) => res.json())
+    return await fetch('/api/budget/list', requestOptions).then((res) => res.json() );
 }
 
-function CreateBudget(){
-    
+function CreateBudget(budgetGroup: string,name: string, goal: number) {
+    const budget = {
+        name: name,
+        goal: goal,
+        date: new Date()
+    }
+
+    fetch('/api/budget/add',  {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(budget)
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+        fetch('/api/budgetgroup/addBudget', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ budgetGroup: budgetGroup, budget: data._id })
+        })
+    })
 }
 
 
@@ -37,10 +54,12 @@ export function BudgetGroupList(props: BudgetGroupProps) {
         <div className="flex flex-col rounded-md mb-5">
             <div className="flex flex-row items-center m-2">
                 <Label className="text-xl font-semibold">{props.budgetGroup.name}</Label>
-               <AddBudgetDialog   ></AddBudgetDialog>
+                <AddBudgetDialog OnAddSumit={(dialogData) => {
+                    CreateBudget(props.budgetGroup._id.toString(),dialogData.name, dialogData.goal);
+                }}  ></AddBudgetDialog>
             </div>
             <div>
-               {budgets.map((budget: Budget) => <BudgetCard budget={budget} />)}
+                {budgets.map((budget: Budget) => <BudgetCard budget={budget} />)}
             </div>
         </div>
     );

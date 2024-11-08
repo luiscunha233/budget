@@ -1,5 +1,4 @@
 import { connectToDatabase } from '@/lib/db';
-import { Budget } from '@/model/model';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -7,7 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const db = await connectToDatabase();
-  await db.collection('Budget').insertOne(req.body)
-  const data = await db.collection('Budget').find().toArray()
-  res.status(200).json(data)
+  const newBudget = await db.collection('Budget').insertOne(req.body);
+
+  res.status(200).json(await db.collection('Budget').findOne({ '_id' : newBudget.insertedId }))
 }
