@@ -10,7 +10,8 @@ import { useEffect, useState } from "react";
 import { BudgetTransactions } from "./budgetTransactions";
 
 interface budgetCardContentProp {
-    budget: Budget
+    budget: Budget,
+    onDelete: (budget: Budget) => void
 }
 
 async function getTransactions(budget: Budget): Promise<Transaction[]> {
@@ -53,7 +54,12 @@ export function BudgetCardContent(props: budgetCardContentProp) {
                 <div className="flex flex-row justify-between">
                     <Button variant="ghost" size="icon"><DiamondPlus size={18} /></Button>
                     <Button variant="ghost" size="icon"><Pencil size={18} /></Button>
-                    <Button variant="ghost" size="icon"><Trash2 size={18} /></Button>
+                    <Button variant="ghost" size="icon" onClick={() => {
+                        fetch('/api/budget/delete', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(props.budget)}).then(() => props.onDelete(props.budget))
+                    }}><Trash2 size={18} /></Button>
                     <Button variant="ghost" size="icon"><Settings2 size={18} /></Button>
                 </div>
                 <div className="basis-auto">

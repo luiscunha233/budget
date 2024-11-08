@@ -16,7 +16,7 @@ export default async function handler(
   } else {
     const data = await db.collection('Budget').find({ "_id": { "$in": req.body.budgets.map((budget: string) => new ObjectId(budget)) } }).toArray();
     if (data == null) {
-      res.status(404).end();
+      res.status(404).json([]);;
     } else {
       res.status(200).json(data)
     }

@@ -18,7 +18,8 @@ import { Plus } from "lucide-react"
 
 
 interface BudgetCardProps {
-  budget: Budget
+  budget: Budget,
+  onDelete: (budget: Budget) => void
 }
 
 
@@ -26,7 +27,7 @@ export function BudgetCard(props: BudgetCardProps) {
   
   return (
     <Card className="mb-4 w-[calc(100%-15px)]">
-      <BudgetCardContent budget={props.budget} />
+      <BudgetCardContent budget={props.budget} onDelete={props.onDelete} />
     </Card>
   )
 }

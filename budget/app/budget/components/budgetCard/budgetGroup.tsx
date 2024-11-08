@@ -15,30 +15,7 @@ async function getBudgets(budgetGroup: BudgetGroup): Promise<Budget[]> {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ budgets: budgetGroup.budgets })
     }
-    return await fetch('/api/budget/list', requestOptions).then((res) => res.json() );
-}
-
-function CreateBudget(budgetGroup: string,name: string, goal: number) {
-    const budget = {
-        name: name,
-        goal: goal,
-        date: new Date()
-    }
-
-    fetch('/api/budget/add',  {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(budget)
-    })
-    .then((res) => res.json())
-    .then((data) => {
-        console.log(data);
-        fetch('/api/budgetgroup/addBudget', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ budgetGroup: budgetGroup, budget: data._id })
-        })
-    })
+    return await fetch('/api/budget/list', requestOptions).then((res) => res.json());
 }
 
 
@@ -54,12 +31,29 @@ export function BudgetGroupList(props: BudgetGroupProps) {
         <div className="flex flex-col rounded-md mb-5">
             <div className="flex flex-row items-center m-2">
                 <Label className="text-xl font-semibold">{props.budgetGroup.name}</Label>
-                <AddBudgetDialog OnAddSumit={(dialogData) => {
-                    CreateBudget(props.budgetGroup._id.toString(),dialogData.name, dialogData.goal);
+                <AddBudgetDialog OnAddSumit={async (dialogData) => {
+                    const budget = {
+                        name: dialogData.name,
+                        goal: dialogData.goal,
+                        date: new Date()
+                    }
+
+                    const addResult = await fetch('/api/budget/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(budget)
+                    })
+                    const data = await addResult.json();
+                    const addBudgetResult = await fetch('/api/budgetgroup/addBudget', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ budgetGroup: props.budgetGroup._id, budget: data._id })
+                    })
+                    setBudgets(budgets.concat(data));
                 }}  ></AddBudgetDialog>
             </div>
             <div>
-                {budgets.map((budget: Budget) => <BudgetCard budget={budget} />)}
+                {budgets.map((budget: Budget) => <BudgetCard budget={budget} onDelete={(budget) => setBudgets(budgets.filter((b) => b._id != budget._id))} />)}
             </div>
         </div>
     );
