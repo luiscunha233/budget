@@ -1,7 +1,8 @@
-import { Budget } from "@/model/model";
+
+import { Budget } from "@prisma/client";
 import { parseIso } from "ts-date/locale/en";
 
-export function comboxDateMaper(entry: Budget) {
+export function comboxDateMaper(entry: any) {
     let date = parseIso(entry.date.toString());
 
     return {

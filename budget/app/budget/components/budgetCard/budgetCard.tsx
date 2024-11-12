@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Budget } from "@/model/model"
+import { Budget } from '@prisma/client'
 import { ResponsivePie } from '@nivo/pie'
 import { BudgetPie } from "./budgetpie"
 import { Progress } from "@/components/ui/progress"
@@ -18,8 +18,7 @@ import { Plus } from "lucide-react"
 
 
 interface BudgetCardProps {
-  budget: Budget,
-  onDelete: (budget: Budget) => void
+  budget: Budget
 }
 
 
@@ -27,7 +26,7 @@ export function BudgetCard(props: BudgetCardProps) {
   
   return (
     <Card className="mb-4 w-[calc(100%-15px)]">
-      <BudgetCardContent budget={props.budget} onDelete={props.onDelete} />
+      <BudgetCardContent budget={props.budget} onDelete={()=>{}} />
     </Card>
   )
 }

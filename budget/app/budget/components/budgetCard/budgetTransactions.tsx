@@ -1,7 +1,7 @@
 'use client'
 
 import { Separator } from "@/components/ui/separator"
-import { Budget, Transaction } from "@/model/model"
+import { Budget, Transaction } from '@prisma/client'
 
 import { Scroll } from "lucide-react";
 import { BudgetTransactionItem } from "./BudgetTransactionItem";

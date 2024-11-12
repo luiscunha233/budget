@@ -2,7 +2,7 @@
 
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { Budget } from "@/model/model";
+import { Budget } from '@prisma/client';
 
 
 interface BudgetCardInfoProps {

@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  balance      Int
+  name         String
+  type         String
+  Transactions Transactions[]
+}
+
+model Budget {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  date          String
+  goal          Int
+  name          String
+  Transactions  Transactions[]
+  BudgetGroup   BudgetGroup?   @relation(fields: [budgetGroupId], references: [id])
+  budgetGroupId String?        @db.ObjectId
+}
+
+model BudgetGroup {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  budgets Budget[]
+  name    String
+  type    String
+}
+
+model Transactions {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  accountid  String  @db.ObjectId
+  account    Account @relation(fields: [accountid], references: [id])
+  bill       Boolean
+  budgetId   String  @db.ObjectId
+  budget     Budget  @relation(fields: [budgetId], references: [id])
+  date       String
+  isPayed    Boolean
+  name       String
+  recurrency String
+  value      Int
+}

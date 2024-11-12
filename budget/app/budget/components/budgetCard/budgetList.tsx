@@ -1,12 +1,8 @@
 "use client";
 
-import { Budget, BudgetGroup } from "@/model/model"
+import { Budget, BudgetGroup } from '@prisma/client'
 import { BudgetCard } from "./budgetCard"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-    Card,
-    CardContent,
-} from "@/components/ui/card"
 import { BudgetGroupList } from "./budgetGroup"
 
 interface BudgetListProps {

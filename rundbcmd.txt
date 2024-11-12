@@ -1,1 +1,0 @@
-docker run --name budget-mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=luis -e MONGO_INITDB_ROOT_PASSWORD=budget123 -e MONGO_INITDB_DATABASE=test -v "C:\Users\Adamastor\Desktop\budgetapp\budget\budget-db:/data/db" -d mongo:latest 

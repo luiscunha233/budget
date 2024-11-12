@@ -1,16 +1,16 @@
-'use client'
-
+"use client"
 import React, { useEffect, useState } from "react";
+import type { BudgetGroup } from '@prisma/client'
 import {
   Tabs,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { ComboxboxValue, DateCombobox } from "@/app/budget/components/dateCombobox";
-import { BudgetGroup } from "@/model/model";
 import { newValidDate } from "ts-date/esm/locale/en";
 import { BudgetList } from "./components/budgetCard/budgetList";
 import { BudgetGroupAddDialog } from "./dialogs/addBudgetGroupDialog";
+import { getAllBudgetGroups } from "@/server-functions/BudgetGroup";
 
 function comboxDatesInitializer(loadedDates: ComboxboxValue[]) {
 
@@ -55,13 +55,6 @@ export default function BudgetPage() {
     };
     fetchData();
   }, [budgetDate, budgetType]);
-
-
-  async function getAllBudgetGroups(): Promise<BudgetGroup[]> {
-    const response = await fetch('/api/budgetgroup/all');
-    const responseData = await response.json();
-    return responseData as BudgetGroup[];
-  }
 
   return (
     <div className="flex flex-col gap-5  w-full">

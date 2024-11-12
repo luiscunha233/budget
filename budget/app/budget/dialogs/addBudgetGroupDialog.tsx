@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -11,8 +10,10 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {  BudgetGroup } from "@/model/model"
-import { Group, Plus } from "lucide-react"
+import { createBudgetGroup } from "@/server-functions/BudgetGroup"
+import { BudgetGroup } from "@prisma/client"
+
+import { Plus } from "lucide-react"
 import { useState } from "react"
 
 export interface BudgetGroupAddDialogProps {
@@ -45,18 +46,8 @@ export function BudgetGroupAddDialog(props: BudgetGroupAddDialogProps) {
         </div>
         <DialogFooter >
           <Button onClick={async ()=>{
-            let data ={
-              name:name,
-              type:props.type == 'all' ? 'expenses' : props.type
-            }
+            createBudgetGroup(name,props.type == 'all' ? 'expenses' : props.type);
             setOpen(false);
-            let result = await fetch("/api/budgetgroup/add",{
-              method:'POST',
-              headers:{'Content-Type':'application/json'},
-              body: JSON.stringify(data)
-            })
-            let budgets = await result.json();
-            props.setBudgetGroups(budgets as BudgetGroup[]);
             }}>Add</Button>
         </DialogFooter>
       </DialogContent>

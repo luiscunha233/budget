@@ -1,6 +1,6 @@
 'use client';
 
-import { Budget, Transaction } from "@/model/model";
+import { Budget, Transaction } from '@prisma/client';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { BudgetCardInfo } from "./budgetCardInfo";
 import { BudgetBadge } from "./budgetBadge";
@@ -8,15 +8,11 @@ import { Button } from "@/components/ui/button";
 import { ChevronsDown, ChevronsUp, DiamondPlus, Pencil, Settings2, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BudgetTransactions } from "./budgetTransactions";
+import { getBudgetTransactions } from '@/server-functions/Transactions';
 
 interface budgetCardContentProp {
     budget: Budget,
     onDelete: (budget: Budget) => void
-}
-
-async function getTransactions(budget: Budget): Promise<Transaction[]> {
-
-    return await fetch(`/api/transaction/budget/${budget._id}`).then((res) => res.json())
 }
 
 
@@ -28,7 +24,7 @@ export function BudgetCardContent(props: budgetCardContentProp) {
 
 
     useEffect(() => {
-        getTransactions(props.budget).then((data) => {
+        getBudgetTransactions(props.budget).then((data) => {
             let usedBudget = 0.0;
             data.forEach((transaction: Transaction) => {
                 usedBudget += (transaction.value*-1)

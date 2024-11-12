@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
-import { Account, Transaction } from "@/model/model";
+import { Account, Transaction } from '@prisma/client';
 import { ObjectId } from "mongodb";
 import { useEffect, useState } from "react";
 

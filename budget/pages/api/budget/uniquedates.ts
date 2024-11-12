@@ -1,5 +1,6 @@
 import { connectToDatabase } from '@/lib/db';
-import { ObjectId } from 'mongodb';
+
+import { comboxDateMaper } from '@/utility/mapper';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -7,11 +8,13 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const db = await connectToDatabase();
-  const data = await db.collection('Accounts').findOne({ '_id' : new ObjectId(req.query['account'] as string) });
+  const data = await db.collection('Budget').find().toArray();
 
   if(data == null){
-    res.status(404).end();
-  }else{
-    res.status(200).json(data)
+    res.status(200).json([]);
   }
+
+  const mappedData = data.map(comboxDateMaper);
+
+  res.status(200).json(mappedData);
 }
