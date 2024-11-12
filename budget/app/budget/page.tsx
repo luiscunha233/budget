@@ -1,6 +1,6 @@
 "use client"
-import React, { useEffect, useState } from "react";
-import type { BudgetGroup } from '@prisma/client'
+import React, { useCallback, useEffect, useState } from "react";
+import type { Budget, BudgetGroup } from '@prisma/client'
 import {
   Tabs,
   TabsList,
@@ -11,6 +11,7 @@ import { newValidDate } from "ts-date/esm/locale/en";
 import { BudgetList } from "./components/budgetCard/budgetList";
 import { BudgetGroupAddDialog } from "./dialogs/addBudgetGroupDialog";
 import { getAllBudgetGroups } from "@/server-functions/BudgetGroup";
+import { BudgetTypeTabs } from "./components/budgetCard/typeTabs";
 
 function comboxDatesInitializer(loadedDates: ComboxboxValue[]) {
 
@@ -39,17 +40,19 @@ function comboxDatesInitializer(loadedDates: ComboxboxValue[]) {
 export default function BudgetPage() {
 
   const [data, setComboxData] = useState<ComboxboxValue[]>([]);
-  const [budgetgroups, setBudgetGroups] = useState<BudgetGroup[]>();
+  const [budgetgroups, setBudgetGroups] = useState<(BudgetGroup & { budgets: Budget[] })[]>();
   const [budgetType, setBudgetType] = useState<string>("all");
   const [budgetDate, setBudgetDate] = useState<string>();
 
-
+  const budgetGroupsCallback = useCallback((budgets: (BudgetGroup & { budgets: Budget[] })[]) => {
+    setBudgetGroups(budgets);
+  },[]);
 
 
   useEffect(() => {
     const fetchData = async () => {
       let budgetGroups = await getAllBudgetGroups();
-      setBudgetGroups(budgetGroups as BudgetGroup[]);
+      setBudgetGroups(budgetGroups);
       const existingDates = await fetch("/api/budget/uniquedates").then((res) => res.json());
       setComboxData(comboxDatesInitializer(existingDates));
     };
@@ -64,17 +67,10 @@ export default function BudgetPage() {
         </div>
       </div>
       <div className="flex flex-row space-x-5">
-      <Tabs onValueChange={setBudgetType} defaultValue="all" className="w-[400px]">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="expenses">Expenses</TabsTrigger>
-          <TabsTrigger value="incomes">Incomes</TabsTrigger>
-          <TabsTrigger value="investments">Investments</TabsTrigger>
-        </TabsList>
-      </Tabs>
-      <BudgetGroupAddDialog type={budgetType} date={budgetDate} setBudgetGroups={setBudgetGroups} />
+      <BudgetTypeTabs setBudgetType={setBudgetType} />
+      <BudgetGroupAddDialog type={budgetType} date={budgetDate} setBudgetGroups={budgetGroupsCallback} />
       </div>
-      <BudgetList budgetGroups={budgetgroups} budgetType={budgetType} />
+      <BudgetList budgetGroups={budgetgroups ?? []} budgetType={budgetType} />
     </div>
   );
 }
