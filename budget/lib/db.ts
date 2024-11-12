@@ -1,6 +1,6 @@
 import { Db, MongoClient } from "mongodb";
 
-const uri = 'mongodb://luis:budget123@localhost:27017/';
+const uri = process.env.DATABASE_URL;
 const client = new MongoClient(uri);
 
 export async function connectToDatabase():Promise<Db> {

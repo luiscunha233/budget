@@ -10,12 +10,14 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { createBudget } from "@/server-functions/Budget"
+import { BudgetGroup } from "@prisma/client"
 import { Plus } from "lucide-react"
 import { useState } from "react"
 
 
 export interface BudgetAddDialogProps {
-  OnAddSumit: (input: { name: string, goal: number }) => void
+  budgetGroup: BudgetGroup
 }
 
 export function AddBudgetDialog(props: BudgetAddDialogProps) {
@@ -49,8 +51,8 @@ export function AddBudgetDialog(props: BudgetAddDialogProps) {
         </div>
         <DialogFooter >
           <Button onClick={async () => {
+            createBudget(props.budgetGroup.id,name,goal);
             setOpen(false);
-            props.OnAddSumit({ name: name,goal:goal });
           }}>Add</Button>
         </DialogFooter>
       </DialogContent>

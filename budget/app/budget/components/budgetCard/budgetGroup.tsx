@@ -16,13 +16,7 @@ export function BudgetGroupList(props: BudgetGroupProps) {
         <div className="flex flex-col rounded-md mb-5">
             <div className="flex flex-row items-center m-2">
                 <Label className="text-xl font-semibold">{props.budgetGroup.name}</Label>
-                <AddBudgetDialog OnAddSumit={async (dialogData) => {
-                    const budget = {
-                        name: dialogData.name,
-                        goal: dialogData.goal,
-                        date: new Date()
-                    }
-                }}  ></AddBudgetDialog>
+                <AddBudgetDialog budgetGroup={props.budgetGroup}></AddBudgetDialog>
             </div>
             <div>
                 {props.budgetGroup.budgets.map((budget: Budget) => <BudgetCard budget={budget}  />)}

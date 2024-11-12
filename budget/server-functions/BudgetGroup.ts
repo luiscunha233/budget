@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function createBudgetGroup(name: string, type: string) {
     const result = await prisma.budgetGroup.create({data: {name: name, type: type}});
-    revalidatePath("/budget");
+    revalidatePath("/budget",'layout');
     return result;
 }
 

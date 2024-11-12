@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { BudgetGroupList } from "./budgetGroup"
 
 interface BudgetListProps {
-    budgetGroups?: BudgetGroup[],
+    budgetGroups: (BudgetGroup & { budgets: Budget[] })[] ,
     budgetType?: string
 }
 
@@ -14,7 +14,7 @@ export function BudgetList(props: BudgetListProps) {
     return (
         <ScrollArea className="w-full h-[calc(100vh-233px)]">
             {
-                props.budgetGroups?.map((budgetGroup) => {
+                props.budgetGroups?.map((budgetGroup: (BudgetGroup & { budgets: Budget[] })) => {
                     if (props.budgetType === budgetGroup.type || props.budgetType === "all") {
                         return <BudgetGroupList budgetGroup={budgetGroup} />
                     }
