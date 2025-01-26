@@ -1,6 +1,8 @@
+"use server";
+
 import { createAccount, updateAccount, deleteAccount, getAllAccounts, getAccountById, updateBalance, getAllAccountTransaction } from "@/lib/db/Accounts";
 import { getTransactions } from "../db/Accounts";
-import { calculateBalance } from "./TransactionService";
+import { calculateBalance } from "./SyncUtilities";
 
 export async function createAccountService(name: string, type: string) {
     return await createAccount(name, type);

@@ -1,4 +1,5 @@
 import prisma from "@/lib/db/prisma";
+import { addMonth, parse } from "ts-date/locale/en";
 
 export async function createBudgetGroup(name: string, type: string) {
     let newBudgetGroup = await prisma.budgetGroup.create({ data: { name, type } });
@@ -39,6 +40,35 @@ export async function getTotalBudgetExpectedValue(budgetGroupId: string) {
     }
 
     return totalExpectedValue;
+}
+
+export async function getBudgetsInBudgetGroup(budgetGroupId: string) {
+    const budgets = await prisma.budget.findMany({
+        where: {
+            budgetGroupId,
+        },
+    });
+    return budgets;
+
+}
+
+export async function getBudgetOfBudgetGroupByMonth(budgetGroupId: string, year: number, month: number) {
+    const targetStartDate = new Date(year, month - 1, 1);
+    const targetEndDate = addMonth(targetStartDate, 1);
+
+    if (targetStartDate && targetEndDate) {
+        const budgets = await prisma.budget.findMany({
+            where: {
+                budgetGroupId,
+                startDate: {
+                    gte: targetStartDate,
+                    lt: targetEndDate,
+                },
+            },
+        });
+        return budgets;
+    }
+    return [];
 }
 
 

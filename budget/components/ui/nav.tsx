@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { LucideIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, isSubPath } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
@@ -44,7 +44,7 @@ export function Nav({ links, isCollapsed }: NavProps) {
                     href={link.href}
                     className={cn(
                       buttonVariants({
-                        variant: link.href === pathName ? "default" : "ghost",
+                        variant: isSubPath(pathName, link.href) ? "default" : "ghost",
                         size: "icon"
                       }),
                       "h-9 w-9",
@@ -74,7 +74,7 @@ export function Nav({ links, isCollapsed }: NavProps) {
                 href={link.href}
                 className={cn(
                   buttonVariants({
-                    variant: link.href === pathName ? "default" : "ghost",
+                    variant: isSubPath(pathName, link.href) ? "default" : "ghost",
                     size: "sm"
                   }),
                   link.variant === "default" &&

@@ -1,3 +1,5 @@
+"use server";
+
 import * as prisma from "@prisma/client";
 import * as Transaction from "@/lib/db/Transaction";
 import { recalculateBalance } from "./AccountService";
@@ -28,14 +30,6 @@ export async function deleteTransaction(id: string) {
 
 export async function getTransactions(startDate: Date, endDate: Date) {
   return await Transaction.getTransactions(startDate, endDate);
-}
-
-export function calculateBalance(transactions: prisma.Transaction[]) {
-  let balance = 0;
-  for (const transaction of transactions) {
-    balance += transaction.value;
-  }
-  return balance;
 }
 
 
