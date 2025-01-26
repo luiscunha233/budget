@@ -1,6 +1,6 @@
 "use server"
 
-import prisma from "@/db/db";
+import prisma from "@/lib/db/prisma";
 import { Budget } from "@prisma/client";
 
 export async function getBudgetTransactions(budget:Budget) {

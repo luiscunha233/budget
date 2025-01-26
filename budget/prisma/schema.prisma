@@ -8,21 +8,13 @@ datasource db {
 }
 
 model Account {
-  id           String         @id @default(auto()) @map("_id") @db.ObjectId
-  balance      Int
-  name         String
-  type         String
-  Transactions Transactions[]
-}
-
-model Budget {
-  id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  date          String
-  goal          Int
-  name          String
-  Transactions  Transactions[]
-  BudgetGroup   BudgetGroup?   @relation(fields: [budgetGroupId], references: [id])
-  budgetGroupId String?        @db.ObjectId
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  creationBalance Float
+  currentBalance Float
+  balanceDate    DateTime
+  name           String
+  type           String
+  Transactions   Transaction[]
 }
 
 model BudgetGroup {
@@ -32,16 +24,30 @@ model BudgetGroup {
   type    String
 }
 
-model Transactions {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  accountid  String  @db.ObjectId
-  account    Account @relation(fields: [accountid], references: [id])
-  bill       Boolean
-  budgetId   String  @db.ObjectId
-  budget     Budget  @relation(fields: [budgetId], references: [id])
-  date       String
-  isPayed    Boolean
-  name       String
-  recurrency String
-  value      Int
+model Budget {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  startDate     DateTime
+  endDate       DateTime
+  goal          Int
+  name          String
+  Transactions  Transaction[]
+  BudgetGroup   BudgetGroup?  @relation(fields: [budgetGroupId], references: [id])
+  budgetGroupId String?       @db.ObjectId
+}
+
+model Transaction {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  accountid String   @db.ObjectId
+  account   Account  @relation(fields: [accountid], references: [id])
+  budgetId  String   @db.ObjectId
+  budget    Budget   @relation(fields: [budgetId], references: [id])
+  dueDate   DateTime
+  name      String
+  value     Int
+}
+
+model Investment {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  symbol String
+  amount Int
 }

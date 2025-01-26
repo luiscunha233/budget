@@ -1,6 +1,6 @@
 "use server"
 
-import prisma from "@/db/db";
+import prisma from "@/lib/db/prisma";
 
 export async function createBudgetGroup(name: string, type: string) {
     await prisma.budgetGroup.create({data: {name: name, type: type}});
