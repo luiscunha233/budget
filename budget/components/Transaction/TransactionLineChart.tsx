@@ -31,7 +31,6 @@ const chartConfig = {
 
 export function TransactionLineChart(props: {transactions: Transaction[], budgetGoal:number, months: number , year: number}){ 
     const days = daysInMonth(props.months, props.year);
-    console.log(days);
     let data = [];  
     let totalAvailable = props.budgetGoal;
     for(let i = 1; i <= days; i++) {
@@ -43,7 +42,6 @@ export function TransactionLineChart(props: {transactions: Transaction[], budget
         data.push({ date: new Date(props.year, props.months-1, i), value: totalAvailable });
     }
 
-    console.log(data);
 
   return (
     <ChartContainer config={chartConfig}>

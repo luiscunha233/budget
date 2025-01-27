@@ -56,8 +56,6 @@ function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: numbe
 export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: number, totalGoal: number }) {
 
     let { data: chartData, config: chartConfig } = parseBudgetData(props.budgets, props.totalSpent, props.totalGoal);
-    console.log(JSON.stringify(chartData));
-    console.log(JSON.stringify(chartConfig));
 
     return (
         <ChartContainer
