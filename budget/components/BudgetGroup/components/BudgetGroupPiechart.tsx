@@ -18,93 +18,95 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-    { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-    { browser: "other", visitors: 190, fill: "var(--color-other)" },
-]
+import { Budget } from "@prisma/client"
 
-const chartConfig = {
-    visitors: {
-        label: "Visitors",
-    },
-    chrome: {
-        label: "Chrome",
-        color: "hsl(var(--chart-1))",
-    },
-    safari: {
-        label: "Safari",
-        color: "hsl(var(--chart-2))",
-    },
-    firefox: {
-        label: "Firefox",
-        color: "hsl(var(--chart-3))",
-    },
-    edge: {
-        label: "Edge",
-        color: "hsl(var(--chart-4))",
-    },
-    other: {
-        label: "Other",
-        color: "hsl(var(--chart-5))",
-    },
-} satisfies ChartConfig
 
-export function Component() {
-    const totalVisitors = React.useMemo(() => {
-        return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-    }, [])
+function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: number) {
+    let data = [];
+
+    let config: ChartConfig = {};
+
+    let colorIncrement = 360 / budgets.length;
+    let color = 0;
+
+    if (totalSpent < totalGoal) {
+        colorIncrement = 360 / (budgets.length + 1);
+    }
+
+    for (const budget of budgets) {
+        data.push({ name: budget.name, value: budget.goal, fill: `hsl(${color}, 95%, 42.5%)` });
+        config[budget.name] = {
+            label: budget.name,
+            color: `hsl(${color}, 100%, 50%)`
+        }
+        color += colorIncrement;
+    }
+
+    if (totalSpent < totalGoal) {
+        data.push({ name: "Remain", value: (totalGoal - totalSpent), fill: `hsl(0, 0%, 30%)` });
+        config["Remain"] = {
+            label: "Remain",
+            color: `hsl(11, 3%, 28%)`
+        }
+    }
+
+    return { data, config };
+}
+
+export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: number, totalGoal: number }) {
+
+    let { data: chartData, config: chartConfig } = parseBudgetData(props.budgets, props.totalSpent, props.totalGoal);
+    console.log(JSON.stringify(chartData));
+    console.log(JSON.stringify(chartConfig));
 
     return (
-                <ChartContainer
-                    config={chartConfig}
-                    className="mx-auto aspect-square min-h-[200px]"
+        <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square min-h-[175px]"
+        >
+            <PieChart>
+                <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                />
+                <Pie
+                    data={chartData}
+                    dataKey="value"
+                    nameKey="name"
+                    innerRadius={55}
+                    strokeWidth={5}
                 >
-                    <PieChart>
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Pie
-                            data={chartData}
-                            dataKey="visitors"
-                            nameKey="browser"
-                            innerRadius={70}
-                            strokeWidth={5}
-                        >
-                            <Label
-                                content={({ viewBox }) => {
-                                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                                        return (
-                                            <text
-                                                x={viewBox.cx}
-                                                y={viewBox.cy}
-                                                textAnchor="middle"
-                                                dominantBaseline="middle"
-                                            >
-                                                <tspan
-                                                    x={viewBox.cx}
-                                                    y={viewBox.cy}
-                                                    className="fill-foreground text-3xl font-bold"
-                                                >
-                                                    {totalVisitors.toLocaleString()}
-                                                </tspan>
-                                                <tspan
-                                                    x={viewBox.cx}
-                                                    y={(viewBox.cy || 0) + 24}
-                                                    className="fill-muted-foreground"
-                                                >
-                                                    Visitors
-                                                </tspan>
-                                            </text>
-                                        )
-                                    }
-                                }}
-                            />
-                        </Pie>
-                    </PieChart>
-                </ChartContainer>
+                    <Label
+                        content={({ viewBox }) => {
+                            if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                return (
+                                    <text
+                                        x={viewBox.cx}
+                                        y={viewBox.cy}
+                                        textAnchor="middle"
+                                        dominantBaseline="middle"
+                                    >
+                                        <tspan
+                                            x={viewBox.cx}
+                                            y={viewBox.cy}
+                                            className="fill-foreground text-xl font-bold"
+                                        >
+                                            {props.totalSpent}€
+                                        </tspan>
+                                        <tspan
+                                            x={viewBox.cx}
+                                            y={(viewBox.cy || 0) + 24}
+                                            className="fill-muted-foreground text-s"
+                                        >
+                                            of {props.totalGoal}€
+                                        </tspan>
+                                    </text>
+                                )
+                            }
+                        }}
+                    />
+                </Pie>
+            </PieChart>
+        </ChartContainer>
     )
 }

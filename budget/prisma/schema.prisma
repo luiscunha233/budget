@@ -8,13 +8,13 @@ datasource db {
 }
 
 model Account {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
   creationBalance Float
-  currentBalance Float
-  balanceDate    DateTime
-  name           String
-  type           String
-  Transactions   Transaction[]
+  currentBalance  Float
+  balanceDate     DateTime
+  name            String
+  type            String
+  Transactions    Transaction[]
 }
 
 model BudgetGroup {
@@ -28,6 +28,7 @@ model Budget {
   id            String        @id @default(auto()) @map("_id") @db.ObjectId
   startDate     DateTime
   endDate       DateTime
+  icon          String?
   goal          Int
   name          String
   Transactions  Transaction[]
