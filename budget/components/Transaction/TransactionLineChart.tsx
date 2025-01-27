@@ -1,7 +1,7 @@
 "use client"
 
 
-import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceLine, XAxis } from "recharts"
 
 import {
   Card,
@@ -24,21 +24,23 @@ import { daysInMonth } from "@/lib/utils"
 
 const chartConfig = {
   value: {
-    label: "Spent",
+    label: "Available",
     color: "hsl(128, 100.00%, 37.30%)",
   },
 } satisfies ChartConfig
 
-export function TransactionLineChart(props: {transactions: Transaction[], months: number , year: number}){ 
+export function TransactionLineChart(props: {transactions: Transaction[], budgetGoal:number, months: number , year: number}){ 
     const days = daysInMonth(props.months, props.year);
     console.log(days);
     let data = [];  
+    let totalAvailable = props.budgetGoal;
     for(let i = 1; i <= days; i++) {
         let totalTransactedAtDay = props.transactions
         .filter(transaction => new Date(transaction.dueDate).getDate() === i)
         .reduce((total, transaction) => total + transaction.value, 0);
         
-        data.push({ date: new Date(props.year, props.months-1, i), value: totalTransactedAtDay });
+        totalAvailable -= totalTransactedAtDay;
+        data.push({ date: new Date(props.year, props.months-1, i), value: totalAvailable });
     }
 
     console.log(data);
@@ -65,6 +67,7 @@ export function TransactionLineChart(props: {transactions: Transaction[], months
         cursor={false}
         content={<ChartTooltipContent hideLabel />}
       />
+      <ReferenceLine y={0} label="" stroke="red" strokeDasharray="3 3" />
       <Line
         dataKey="value"
         type="basis"

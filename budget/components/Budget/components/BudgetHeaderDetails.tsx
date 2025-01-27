@@ -27,7 +27,7 @@ export default async function BudgetHeaderDetails(props: { budget: Budget, trans
                     </div>
                 </div>
                 <div className="min-w-[200px]">
-                    <TransactionLineChart transactions={props.transactions} months={props.budget.startDate.getMonth() + 1} year={props.budget.startDate.getFullYear()} />
+                    <TransactionLineChart transactions={props.transactions} budgetGoal={props.budget.goal} months={props.budget.startDate.getMonth() + 1} year={props.budget.startDate.getFullYear()} />
                 </div>
             </CardContent>
         </Card>
