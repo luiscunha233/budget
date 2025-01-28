@@ -3,7 +3,6 @@ import { getBudgetBalance } from "@/lib/service/BudgetService";
 import { Budget, Transaction } from "@prisma/client";
 import { format } from "ts-date/locale/en";
 import BudgetSpentProgressBar from "./BudgetSpentProgressBar";
-import { TransactionChart } from "@/components/Transaction/TransactionChart";
 import { TransactionLineChart } from "@/components/Transaction/TransactionLineChart";
 
 export default async function BudgetHeaderDetails(props: { budget: Budget, transactions: Transaction[] }) {

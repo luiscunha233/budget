@@ -8,7 +8,7 @@ export default async function BudgetGroupLayout({
     children: React.ReactNode;
   }) {
     return <> 
-        <div className="flex flex-row gap-10"><BudgetMonthPicker/><AddBudgetPopover/></div>
+        <div className="flex flex-row gap-10"><BudgetMonthPicker/></div>
         <div>{children}</div>
     </>
 }

@@ -19,27 +19,23 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import { Budget } from "@prisma/client"
+import { generateColorPallet, HSLColor, HSLColorToString } from "@/lib/utils"
 
 
-function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: number) {
+function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: number, colors : HSLColor[]) {
     let data = [];
 
     let config: ChartConfig = {};
 
-    let colorIncrement = 360 / budgets.length;
-    let color = 0;
-
-    if (totalSpent < totalGoal) {
-        colorIncrement = 360 / (budgets.length + 1);
-    }
-
+    
+    let colorPick = 0;
     for (const budget of budgets) {
-        data.push({ name: budget.name, value: budget.goal, fill: `hsl(${color}, 95%, 42.5%)` });
+        data.push({ name: budget.name, value: budget.goal, fill: HSLColorToString(colors[colorPick]) });
         config[budget.name] = {
             label: budget.name,
-            color: `hsl(${color}, 100%, 50%)`
+            color: HSLColorToString(colors[colorPick])
         }
-        color += colorIncrement;
+        colorPick++;
     }
 
     if (totalSpent < totalGoal) {
@@ -53,9 +49,9 @@ function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: numbe
     return { data, config };
 }
 
-export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: number, totalGoal: number }) {
+export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: number, totalGoal: number, colors : HSLColor[] }) {
 
-    let { data: chartData, config: chartConfig } = parseBudgetData(props.budgets, props.totalSpent, props.totalGoal);
+    let { data: chartData, config: chartConfig } = parseBudgetData(props.budgets, props.totalSpent, props.totalGoal,props.colors);
 
     return (
         <ChartContainer
