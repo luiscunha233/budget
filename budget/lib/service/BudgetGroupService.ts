@@ -33,6 +33,22 @@ export async function getBudgetsInBudgetGroupService(id: string) {
     }
 }
 
+export async function calculateTotalForBudgetGroupsInMonth(year: number, month: number): Promise<BudgetGroupTotals> {
+    const budgetGroups = await getBudgetGroupsInMonthService(year, month);
+    let totalSpent = 0;
+    let totalGoal = 0;
+
+    for (const budgetGroup of budgetGroups) {
+        const budgets = await getBudgetsInBudgetGroup(budgetGroup.id);
+        const { totalSpent: groupTotalSpent, totalGoal: groupTotalGoal } = await calculateBudgetGroupTotals(budgets);
+        totalSpent += groupTotalSpent;
+        totalGoal += groupTotalGoal;
+    }
+
+    return { totalSpent, totalGoal };
+}
+
+
 export async function getBudgetGroupsInMonthService(year: number, month: number) {
     const allBudgetGroups = await getAllBudgetGroupsService();
     

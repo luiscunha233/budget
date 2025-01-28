@@ -22,13 +22,13 @@ export default async function BudgetGroupPage({
         year = parseInt(paramLoaded.slug[0]);
         month = parseInt(paramLoaded.slug[1]);
     }
-
+    const income = 2300;
     const budgetsGroups = await getBudgetGroupsInMonthService(year, month);
     const colorToDisplay = generateColorPallet(budgetsGroups.length, {hue: 64, saturation: 96, lightness: 42});
     return <>
-        <IncomeDisplay month={month} year={year} colors={colorToDisplay}/>
+        <IncomeDisplay budgetsGroups={budgetsGroups} income={income} month={month} year={year} colors={colorToDisplay}/>
         <div className="my-6 gap-4 flex flex-row flex-wrap">
-            {budgetsGroups.map((budgetGroup,index) => <div className="basis-s"><BudgetGroupCard budgetGroup={budgetGroup} year={year} month={month} color={colorToDisplay[index]} /></div>)}
+            {budgetsGroups.map((budgetGroup,index) => <div className="basis-s"><BudgetGroupCard budgetGroup={budgetGroup} year={year} month={month} color={colorToDisplay[index]} income={income} /></div>)}
         </div>
     </>
 }
