@@ -27,7 +27,17 @@ function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: numbe
 
     let config: ChartConfig = {};
 
-    
+    if(!budgets || budgets.length == 0 ){
+        
+        data.push({ name: "Remain", value: 0.000001, fill: `hsl(0, 0%, 30%)` });
+        
+        config["Remain"] = {
+            label: "Remain",
+            color: `hsl(11, 3%, 28%)`
+        }
+        return { data, config };
+    }
+
     let colorPick = 0;
     for (const budget of budgets) {
         data.push({ name: budget.name, value: budget.goal, fill: HSLColorToString(colors[colorPick]) });
@@ -50,8 +60,10 @@ function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: numbe
 }
 
 export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: number, totalGoal: number, colors : HSLColor[] }) {
+    const totalSpent = props.totalSpent ? props.totalSpent : 0;
+    const totalGoal = props.totalGoal ? props.totalGoal : 0;
 
-    let { data: chartData, config: chartConfig } = parseBudgetData(props.budgets, props.totalSpent, props.totalGoal,props.colors);
+    let { data: chartData, config: chartConfig } = parseBudgetData(props.budgets, totalSpent, props.totalGoal,props.colors);
 
     return (
         <ChartContainer

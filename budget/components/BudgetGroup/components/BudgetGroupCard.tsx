@@ -23,7 +23,7 @@ export default async function BudgetGroupCard(props: BudgetGroupCardProps) {
   const colors = generateColorPallet(budgets.length, { hue: 307, saturation: 78, lightness: 44 }, { hue: -38, saturation: -2, lightness: -1 });
   const percentageAllocated = (totalOfBudgets.totalGoal / props.income) * 100;
 
-  return <Card className="min-w-[200px] min-h-[200px]">
+  return <Card className={`min-w-[200px] min-h-[200px] w-fit ${!budgets || budgets.length == 0? "h-fit": ""}`}>
     <CardHeader className="flex flex-row place-content-between">
       <div className="flex flex-row items-center gap-2">
         <div className="w-4 h-4 rounded-full" style={{ backgroundColor: HSLColorToString(props.color) }} />
@@ -34,7 +34,7 @@ export default async function BudgetGroupCard(props: BudgetGroupCardProps) {
     <CardContent className="flex flex-col items-center">
       <BudgetGroupPiechart budgets={budgets} totalSpent={totalOfBudgets.totalSpent} totalGoal={totalOfBudgets.totalGoal} colors={colors} />
       <div className="flex w-full justify-end">
-        <AddBudgetPopover />
+        <AddBudgetPopover year={props.year} month={props.month} budgetGroup={props.budgetGroup} />
       </div>
       <div>
         {budgets.map((budget: Budget, index) => <BudgetCard key={budget.id} budget={budget} color={colors[index]} />)}

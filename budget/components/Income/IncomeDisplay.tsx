@@ -13,13 +13,13 @@ export default async function IncomeDisplay(props: { budgetsGroups: BudgetGroup[
     return (<Card className="w-fit mt-4 pt-4">
         <CardContent className="flex flex-row items-center gap-4">
             <div className="flex flex-col">
-                <div className="font-bold text-2xl">{totalAllocated.totalGoal}€</div>
+                <div className={`font-bold text-2xl ${totalAllocated.totalGoal > props.income ? "text-red-500" : ""}`}>{totalAllocated.totalGoal}€</div>
                 <div className="font-bold text-gray-400 text-sm">of {props.income}€</div>
             </div>
             <div>
                 <div className="flex flex-row place-content-between">
                     <div className="font-bold text-sm">Allocation</div>
-                    <div className="font-bold text-gray-400 text-sm">{parseFloat(allocatedPercentage.toFixed(2))}%</div>
+                    <div className={`font-bold text-sm ${totalAllocated.totalGoal > props.income ? "text-red-500" : "text-gray-400"}`}>{parseFloat(allocatedPercentage.toFixed(2))}%</div>
                     </div>
                 <IncomeAllocations income={props.income} month={props.month} year={props.year} colors={props.colors} />
             </div>

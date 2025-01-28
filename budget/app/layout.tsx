@@ -25,7 +25,7 @@ export default async function RootLayout({
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <body
         className={cn(
-          "min-h-screen w-full flex",
+          "max-h-screen w-full flex",
           inter.className,
           { "debug-screens": process.env.NODE_ENV === "development" }
         )} 
@@ -39,7 +39,7 @@ export default async function RootLayout({
           {/* Sidebar */}
           <Sidebar />
           {/* main page */}
-          <div className="p-8 m-4 w-full">{children}</div>
+          <div className="px-8 ml-4 mt-8 w-full">{children}</div>
         </ThemeProvider>
       </body>
     </html>

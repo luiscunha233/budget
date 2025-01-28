@@ -1,4 +1,7 @@
+"use server";
+
 import prisma from "@/lib/db/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function createBudget(name: string, startDate: Date, endDate: Date, goal: number, budgetGroupId: string) {
     let newBudget = await prisma.budget.create({ data: { name, startDate,endDate, goal, budgetGroupId } });
