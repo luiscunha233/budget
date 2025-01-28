@@ -6,9 +6,10 @@ import BudgetGroupAmount from "./BudgetGroupAmount";
 import { BudgetGroupPiechart } from "./BudgetGroupPiechart";
 import { calculateBudgetGroupTotals } from "@/lib/service/BudgetGroupService";
 import { generateColorPallet, HSLColor, HSLColorToString } from "@/lib/utils";
+import AddBudgetPopover from "@/components/Budget/components/AddBudgetPopover";
 
 export interface BudgetGroupCardProps {
-  income : number,
+  income: number,
   budgetGroup: BudgetGroup,
   year: number,
   month: number,
@@ -20,7 +21,7 @@ export default async function BudgetGroupCard(props: BudgetGroupCardProps) {
   const budgets = await getBudgetOfBudgetGroupByMonth(props.budgetGroup.id, props.year, props.month);
   const totalOfBudgets = await calculateBudgetGroupTotals(budgets);
   const colors = generateColorPallet(budgets.length, { hue: 307, saturation: 78, lightness: 44 }, { hue: -38, saturation: -2, lightness: -1 });
-  const percentageAllocated = (totalOfBudgets.totalGoal/props.income)* 100;
+  const percentageAllocated = (totalOfBudgets.totalGoal / props.income) * 100;
 
   return <Card className="min-w-[200px] min-h-[200px]">
     <CardHeader className="flex flex-row place-content-between">
@@ -32,6 +33,9 @@ export default async function BudgetGroupCard(props: BudgetGroupCardProps) {
     </CardHeader>
     <CardContent className="flex flex-col items-center">
       <BudgetGroupPiechart budgets={budgets} totalSpent={totalOfBudgets.totalSpent} totalGoal={totalOfBudgets.totalGoal} colors={colors} />
+      <div className="flex w-full justify-end">
+        <AddBudgetPopover />
+      </div>
       <div>
         {budgets.map((budget: Budget, index) => <BudgetCard key={budget.id} budget={budget} color={colors[index]} />)}
       </div>

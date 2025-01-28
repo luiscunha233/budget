@@ -72,6 +72,7 @@ export function TransactionLineChart(props: {transactions: Transaction[], budget
         stroke="var(--color-value)"
         strokeWidth={2}
         dot={false}
+        animationDuration={1000}
       />
     </LineChart>
   </ChartContainer>

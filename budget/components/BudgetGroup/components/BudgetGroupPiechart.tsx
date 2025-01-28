@@ -69,6 +69,7 @@ export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: numb
                     nameKey="name"
                     innerRadius={55}
                     strokeWidth={5}
+                    animationDuration={800}
                 >
                     <Label
                         content={({ viewBox }) => {
