@@ -17,6 +17,7 @@ export default async function BudgetHeaderDetails(props: { budget: Budget, trans
                         <div className="font-bold text-sm text-gray-400">{format(props.budget.startDate, "MMM YYYY")}</div>
                     </div>
                     <div>
+                        <div className="font-bold text-gray-300 mb-1 text-sm">Available</div>
                         <div className="flex flex-row gap-2 items-center">
                             <div className="font-bold text-xl">{props.budget.goal + budgetSpent}€</div>
                             <div className="font-bold text-sm text-gray-400">of {props.budget.goal}€</div>
