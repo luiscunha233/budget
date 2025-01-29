@@ -20,9 +20,23 @@ import {
 } from "@/components/ui/chart"
 import { Budget } from "@prisma/client"
 import { generateColorPallet, HSLColor, HSLColorToString } from "@/lib/utils"
+import { getBudgetBalance } from "@/lib/service/BudgetService"
 
+// Add these type definitions at the top of the file, after the imports
+type chartData = {
+    name: string
+    value: number
+    fill: string
+}[]
 
-function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: number, colors : HSLColor[]) {
+type chartConfig = {
+    [key: string]: {
+        label: string
+        color: string
+    }
+}
+
+async function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: number, colors : HSLColor[]) {
     let data = [];
 
     let config: ChartConfig = {};
@@ -40,7 +54,8 @@ function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: numbe
 
     let colorPick = 0;
     for (const budget of budgets) {
-        data.push({ name: budget.name, value: budget.goal, fill: HSLColorToString(colors[colorPick]) });
+        const budgetSpent = await getBudgetBalance(budget.id);
+        data.push({ name: budget.name, value: budgetSpent, fill: HSLColorToString(colors[colorPick]) });
         config[budget.name] = {
             label: budget.name,
             color: HSLColorToString(colors[colorPick])
@@ -59,11 +74,20 @@ function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal: numbe
     return { data, config };
 }
 
-export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: number, totalGoal: number, colors : HSLColor[] }) {
+export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: number, totalGoal: number, colors: HSLColor[] }) {
     const totalSpent = props.totalSpent ? props.totalSpent : 0;
     const totalGoal = props.totalGoal ? props.totalGoal : 0;
 
-    let { data: chartData, config: chartConfig } = parseBudgetData(props.budgets, totalSpent, props.totalGoal,props.colors);
+    // Use state to store the chart data
+    const [chartData, setChartData] = React.useState<any>([]);
+    const [chartConfig, setChartConfig] = React.useState<ChartConfig>({});
+
+    React.useEffect(() => {
+        parseBudgetData(props.budgets, totalSpent, totalGoal, props.colors).then((data) => {
+            setChartData(data.data);
+            setChartConfig(data.config);
+        });
+    }, [props.budgets, totalSpent, totalGoal, props.colors]);
 
     return (
         <ChartContainer
@@ -79,11 +103,13 @@ export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: numb
                     data={chartData}
                     dataKey="value"
                     nameKey="name"
+                    key={Math.random()}
                     innerRadius={55}
                     strokeWidth={5}
                     animationDuration={800}
                 >
                     <Label
+                    
                         content={({ viewBox }) => {
                             if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                                 return (
@@ -96,13 +122,20 @@ export function BudgetGroupPiechart(props: { budgets: Budget[], totalSpent: numb
                                         <tspan
                                             x={viewBox.cx}
                                             y={viewBox.cy}
-                                            className="fill-foreground text-xl font-bold"
+                                            className="fill-foreground text-lg font-bold"
                                         >
                                             {props.totalSpent}€
                                         </tspan>
                                         <tspan
                                             x={viewBox.cx}
-                                            y={(viewBox.cy || 0) + 24}
+                                            y={(viewBox.cy || 0) - 22}
+                                            className="fill-foreground text-[11px] font-bold"
+                                        >
+                                            {(((props.totalSpent ?? 0) / (props.totalGoal + 0.000001)) * 100).toFixed(1)}%
+                                        </tspan>
+                                        <tspan
+                                            x={viewBox.cx}
+                                            y={(viewBox.cy || 0) + 22}
                                             className="fill-muted-foreground text-s"
                                         >
                                             of {props.totalGoal}€

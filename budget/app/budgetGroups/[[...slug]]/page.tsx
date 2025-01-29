@@ -26,7 +26,7 @@ export default async function BudgetGroupPage({
     }
     const income = 2300;
     const budgetsGroups = await getAllBudgetGroups();
-    const colorToDisplay = generateColorPallet(budgetsGroups.length, { hue: 64, saturation: 96, lightness: 42 });
+    const colorToDisplay = generateColorPallet(budgetsGroups.length, { hue: 34, saturation: 96, lightness: 42 });
     return <>
         <IncomeDisplay budgetsGroups={budgetsGroups} income={income} month={month} year={year} colors={colorToDisplay} />
         <div className="flex flex-wrap my-6 gap-4">

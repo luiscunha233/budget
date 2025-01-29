@@ -17,7 +17,11 @@ export async function deleteBudgetGroup(id: string) {
 }
 
 export async function getAllBudgetGroups() {
-    let budgetGroups = await prisma.budgetGroup.findMany();
+    let budgetGroups = await prisma.budgetGroup.findMany({
+        include: {
+            budgets: true
+        }
+    });
     return budgetGroups;
 }
 
@@ -65,6 +69,12 @@ export async function getBudgetOfBudgetGroupByMonth(budgetGroupId: string, year:
                     lt: targetEndDate,
                 },
             },
+            include: {
+                Transactions: true
+            },
+            orderBy: {
+                goal: 'desc'
+            }
         });
         return budgets;
     }
