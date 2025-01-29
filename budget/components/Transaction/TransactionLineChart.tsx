@@ -38,7 +38,7 @@ export function TransactionLineChart(props: {transactions: Transaction[], budget
         .filter(transaction => new Date(transaction.dueDate).getDate() === i)
         .reduce((total, transaction) => total + transaction.value, 0);
         
-        totalAvailable -= totalTransactedAtDay;
+        totalAvailable += totalTransactedAtDay;
         data.push({ date: new Date(props.year, props.months-1, i), value: totalAvailable });
     }
 

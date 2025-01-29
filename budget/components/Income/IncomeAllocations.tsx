@@ -27,12 +27,12 @@ export default async function IncomeSpent(props: { income: number, month: number
     if (allocationByBudgetGroup.length === 1) {
         allocationByBudgetGroup[0] = cloneElement(allocationByBudgetGroup[0], { className: cn(allocationByBudgetGroup[0].props.className, "rounded-full") });
     } else if (allocationByBudgetGroup.length > 0) {
-            allocationByBudgetGroup[0] = cloneElement(allocationByBudgetGroup[0], { className: cn(allocationByBudgetGroup[0].props.className, "rounded-l-lg") });
-            allocationByBudgetGroup[allocationByBudgetGroup.length - 1] = cloneElement(allocationByBudgetGroup[allocationByBudgetGroup.length - 1], { className: cn(allocationByBudgetGroup[allocationByBudgetGroup.length - 1], "rounded-r-lg") });
+            allocationByBudgetGroup[0] = cloneElement(allocationByBudgetGroup[0], { className: cn(allocationByBudgetGroup[0].props.className, "rounded-l-full") });
+            allocationByBudgetGroup[allocationByBudgetGroup.length - 1] = cloneElement(allocationByBudgetGroup[allocationByBudgetGroup.length - 1], { className: cn(allocationByBudgetGroup[allocationByBudgetGroup.length - 1], "rounded-r-full") });
     }
 
     return <div className="flex flex-row w-full mt-1 min-w-[450px] items-center gap-2">
-        <div className="flex flex-row h-5 mt-1 w-[100%] bg-gray-600 rounded-full">
+        <div className="flex flex-row h-5 mt-1 w-[100%] bg-gray-600  rounded-full">
             {allocationByBudgetGroup}
         </div>
     </div>

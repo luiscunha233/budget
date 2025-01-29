@@ -18,13 +18,14 @@ export default async function IncomeAllocations(props: { income: number, month: 
         const budgetPercentage = (totalOfBudgets.totalSpent / props.income) * 100;
         totalPercentage += budgetPercentage;
         
-        allocationByBudgetGroup.push(<div className="h-5 z-1" style={{ width: `${budgetPercentage}%`
+        allocationByBudgetGroup.push(<div id={budgetGroup.id} className="h-5 z-1" style={{ width: `${budgetPercentage}%`
         , backgroundColor: `hsl(${props.colors[i].hue}, ${props.colors[i].saturation}%, ${props.colors[i].lightness}%)` }}/>);
     }
-
-    if(allocationByBudgetGroup.length > 0) {
-        allocationByBudgetGroup[0] = cloneElement(allocationByBudgetGroup[0],{className: cn(allocationByBudgetGroup[0].props.className, "rounded-l-lg")});
-        allocationByBudgetGroup[allocationByBudgetGroup.length-1] = cloneElement(allocationByBudgetGroup[allocationByBudgetGroup.length-1],{className: cn(allocationByBudgetGroup[allocationByBudgetGroup.length-1],"rounded-r-lg")});
+    if (allocationByBudgetGroup.length === 1) {
+        allocationByBudgetGroup[0] = cloneElement(allocationByBudgetGroup[0], { className: cn(allocationByBudgetGroup[0].props.className, "rounded-full") });
+    } else if(allocationByBudgetGroup.length > 0) {
+        allocationByBudgetGroup[0] = cloneElement(allocationByBudgetGroup[0],{className: cn(allocationByBudgetGroup[0].props.className, "rounded-l-full")});
+        allocationByBudgetGroup[allocationByBudgetGroup.length-1] = cloneElement(allocationByBudgetGroup[allocationByBudgetGroup.length-1],{className: cn(allocationByBudgetGroup[allocationByBudgetGroup.length-1],"rounded-r-full")});
     }
 
     return <div className="flex flex-row w-full mt-1 min-w-[450px] items-center gap-2">

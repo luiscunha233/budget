@@ -3,12 +3,16 @@
 import * as prisma from "@prisma/client";
 import * as Transaction from "@/lib/db/Transaction";
 import { recalculateBalance } from "./AccountService";
+import { revalidatePath } from "next/cache";
 
 
-export async function createTransaction(name: string, value: number, dueDate: Date, accountid: string, budgetId: string) {
+export async function createTransaction(name: string, value: number, dueDate: Date, accountid: string, budgetId: string, revalidate?: string) {
   let newTransaction = await Transaction.createTransaction(name, value, dueDate, accountid, budgetId);
   if (newTransaction) {
     recalculateBalance(accountid);
+    if (revalidate) {
+      revalidatePath(revalidate, "page");
+    }
     return newTransaction;
   }
 }

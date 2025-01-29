@@ -55,7 +55,7 @@ async function parseBudgetData(budgets: Budget[], totalSpent: number, totalGoal:
     let colorPick = 0;
     for (const budget of budgets) {
         const budgetSpent = await getBudgetBalance(budget.id);
-        data.push({ name: budget.name, value: budgetSpent, fill: HSLColorToString(colors[colorPick]) });
+        data.push({ name: budget.name, value: budgetSpent ? budgetSpent * -1 : 0, fill: HSLColorToString(colors[colorPick]) });
         config[budget.name] = {
             label: budget.name,
             color: HSLColorToString(colors[colorPick])

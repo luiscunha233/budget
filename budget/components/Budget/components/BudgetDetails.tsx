@@ -21,10 +21,10 @@ export default async function BudgetDetails(props: { budget: Budget, color : HSL
                 <div className="text-[10.5px] text-gray-400">{budgetWithTransactions?.Transactions.length} Transactions</div>
             </div>
             <div className="flex flex-col items-end">
-                <div >{budgetSpent ?? 0}€</div>
+                <div >{(budgetSpent ?? 0) * -1}€</div>
                 <div className="text-[10.5px] text-gray-400">of {props.budget.goal}€</div>
             </div>
         </div>
-        <BudgetSpentProgressBar budgetSpent={budgetSpent ?? 0} budgetGoal={props.budget.goal} />
+        <BudgetSpentProgressBar budgetSpent={(budgetSpent ?? 0) * -1} budgetGoal={props.budget.goal} />
     </div>
 }

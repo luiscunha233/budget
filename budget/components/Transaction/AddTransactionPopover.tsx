@@ -5,7 +5,10 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Account, Budget } from "@prisma/client";
 import { Plus, Receipt } from "lucide-react";
-import { useState } from "react";
+import { useOptimistic, useState } from "react";
+import { AccountPicker } from "../Account/AccountPicker";
+import { createTransaction } from "@/lib/service/TransactionService";
+import { Switch } from "../ui/switch";
 
 export default function AddTransactionPopover(props: { budget: Budget, noTransactions?: boolean }) {
     const [name, setName] = useState('')
@@ -13,8 +16,10 @@ export default function AddTransactionPopover(props: { budget: Budget, noTransac
     const [dueDate, setDueDate] = useState<Date>(new Date())
     const [creating, setCreating] = useState(false)
     const [open, setOpen] = useState(false)
+    const [account, setAccount] = useState<string>("")
+    const [type, setType] = useState(false)
 
-    return <Popover open={open} onOpenChange={() => setOpen(!open)}>
+    return <Popover open={open} onOpenChange={() => {setOpen(!open)}}>
         <PopoverTrigger asChild>
             <div className="inline-flex items-center text-gray-400 hover:text-gray-200 cursor-pointer">
                 {!props.noTransactions && <><Plus size={15} /><Receipt size={20} /></>}
@@ -31,6 +36,18 @@ export default function AddTransactionPopover(props: { budget: Budget, noTransac
                 </div>
                 <div className="grid gap-2">
                     <div className="grid grid-cols-3 items-center gap-4">
+                        <Label htmlFor="name">Account</Label>
+                        <AccountPicker onClick={(acc) => {
+                            setAccount(acc)
+                        }} />
+                    </div>
+                    <div className="grid grid-cols-3 items-center gap-4">
+                        <Label htmlFor="name">Income</Label>
+                        <Switch defaultChecked={false} onCheckedChange={(checked) => {
+                            setType(checked)
+                        }} />
+                    </div>
+                    <div className="grid grid-cols-3 items-center gap-4">
                         <Label htmlFor="name">Name</Label>
                         <Input
                             id="name"
@@ -45,7 +62,7 @@ export default function AddTransactionPopover(props: { budget: Budget, noTransac
                         <Label htmlFor="value">Value</Label>
                         <Input
                             id="value"
-                            type="text"
+                            type="number"
                             placeholder="0.00"
                             value={value}
                             onChange={(e) => setValue(parseInt(e.target.value))}
@@ -65,11 +82,10 @@ export default function AddTransactionPopover(props: { budget: Budget, noTransac
                     <Button
                         size="sm"
                         variant="outline"
-                        disabled={creating}
+                        disabled={creating || name == "" || value == 0 || account == ""}
                         onClick={async () => {
                             setCreating(true)
-                            // TODO: Add createTransactionService call here
-                            // await createTransactionService(name, value, dueDate, props.budget.id, props.account.id)
+                            createTransaction(name, type ? value : -value, dueDate, account, props.budget.id, "/budget/")
                             setCreating(false)
                             setName("")
                             setValue(0)

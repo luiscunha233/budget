@@ -6,7 +6,7 @@ import BudgetSpentProgressBar from "./BudgetSpentProgressBar";
 import { TransactionLineChart } from "@/components/Transaction/TransactionLineChart";
 
 export default async function BudgetHeaderDetails(props: { budget: Budget, transactions: Transaction[] }) {
-    const budgetSpent = await getBudgetBalance(props.budget.id);
+    const budgetSpent = (await getBudgetBalance(props.budget.id)) ?? 0;
 
     return <div className="flex flex-row ml-2 my-1">
         <Card>
@@ -18,11 +18,11 @@ export default async function BudgetHeaderDetails(props: { budget: Budget, trans
                     </div>
                     <div>
                         <div className="flex flex-row gap-2 items-center">
-                            <div className="font-bold text-xl">{budgetSpent}€</div>
+                            <div className="font-bold text-xl">{props.budget.goal + budgetSpent}€</div>
                             <div className="font-bold text-sm text-gray-400">of {props.budget.goal}€</div>
 
                         </div>
-                        <BudgetSpentProgressBar budgetSpent={budgetSpent ?? 0} budgetGoal={props.budget.goal} />
+                        <BudgetSpentProgressBar budgetSpent={props.budget.goal + budgetSpent} budgetGoal={props.budget.goal} />
                     </div>
                 </div>
                 <div className="min-w-[200px]">

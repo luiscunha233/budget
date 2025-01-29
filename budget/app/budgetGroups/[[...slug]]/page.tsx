@@ -30,7 +30,7 @@ export default async function BudgetGroupPage({
     return <>
         <IncomeDisplay budgetsGroups={budgetsGroups} income={income} month={month} year={year} colors={colorToDisplay} />
         <div className="flex flex-wrap my-6 gap-4">
-            {budgetsGroups.map((budgetGroup, index) => <BudgetGroupCard budgetGroup={budgetGroup} year={year} month={month} color={colorToDisplay[index]} income={income} />)}
+            {budgetsGroups.map((budgetGroup, index) => <BudgetGroupCard key={index} budgetGroup={budgetGroup} year={year} month={month} color={colorToDisplay[index]} income={income} />)}
         </div>
     </>
 }

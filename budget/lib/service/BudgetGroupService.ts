@@ -75,7 +75,7 @@ export async function calculateBudgetGroupTotals(budgets: Budget[]): Promise<Bud
     let totalGoal = 0;
 
     for (const budget of budgets) {
-        totalSpent += await getBudgetBalance(budget.id) ?? 0;
+        totalSpent += (await getBudgetBalance(budget.id) ?? 0) * -1;
         totalGoal += budget.goal;
     }
 
