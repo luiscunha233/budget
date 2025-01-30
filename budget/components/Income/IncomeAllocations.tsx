@@ -18,7 +18,7 @@ export default async function IncomeSpent(props: { income: number, month: number
         const budgetPercentage = (totalOfBudgets.totalGoal / props.income) * 100;
         totalPercentage += budgetPercentage;
 
-        allocationByBudgetGroup.push(<div className="h-5 z-1" style={{
+        allocationByBudgetGroup.push(<div key={i} className="h-5 z-1" style={{
             width: `${budgetPercentage}%`
             , backgroundColor: `hsl(${props.colors[i].hue}, ${props.colors[i].saturation}%, ${props.colors[i].lightness}%)`
         }} />);

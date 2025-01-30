@@ -2,6 +2,7 @@ import { getAccountById } from "@/lib/db/Accounts";
 import { Transaction } from "@prisma/client";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { EllipsisVertical } from "lucide-react";
+import { RemoveTransactionDropdown } from "./RemoveTransactionDropdown";
 
 
 export default async function TransactionDetails(props: { transaction: Transaction }) {
@@ -24,8 +25,9 @@ export default async function TransactionDetails(props: { transaction: Transacti
                 <div >{parseFloat(props.transaction.value.toFixed(2))}€</div>
                 <div className="text-xs text-gray-400">{props.transaction.dueDate.toLocaleDateString()}</div>
             </div>
-            <EllipsisVertical className="ml-1" />
+            <div className="ml-2">
+                <RemoveTransactionDropdown transaction={props.transaction} />
+            </div>
         </div>
-
     </div>
 }

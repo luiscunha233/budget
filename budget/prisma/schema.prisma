@@ -40,8 +40,8 @@ model Transaction {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   accountid String   @db.ObjectId
   account   Account  @relation(fields: [accountid], references: [id])
-  budgetId  String   @db.ObjectId
-  budget    Budget   @relation(fields: [budgetId], references: [id])
+  budgetId  String?   @db.ObjectId
+  budget    Budget?  @relation(fields: [budgetId], references: [id])
   dueDate   DateTime
   name      String
   value     Int

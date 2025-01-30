@@ -28,8 +28,12 @@ export async function updateTransaction(id: string, name: string, value: number,
   return updatedTransaction;
 }
 
-export async function deleteTransaction(id: string) {
-  return await Transaction.deleteTransaction(id);
+export async function deleteTransaction(id: string, revalidate?: string) {
+  let deletedTransaction = await Transaction.deleteTransaction(id);
+  if (revalidate) {
+    revalidatePath(revalidate, "page");
+  }
+  return deletedTransaction;
 }
 
 export async function getTransactions(startDate: Date, endDate: Date) {
