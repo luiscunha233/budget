@@ -33,7 +33,10 @@ export default async function IncomeDisplay(props: { budgetsGroups: BudgetGroup[
                 </div>
                 <IncomeSpent income={props.income} month={props.month} year={props.year} colors={props.colors} />
             </div>
-
+            <div className="flex flex-col">
+                <div className={`font-bold text-2xl ${totalAllocated.totalSpent > props.income ? "text-red-500" : ""}`}>{totalAllocated.totalSpent}€</div>
+                <div className="font-bold text-gray-400 text-sm">of {props.income}€</div>
+            </div>
         </CardContent>
     </Card>)
 }
