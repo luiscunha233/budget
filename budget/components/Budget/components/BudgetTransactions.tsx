@@ -7,7 +7,7 @@ import AddTransactionPopover from "@/components/Transaction/AddTransactionPopove
 
 export default function BudgetTransactions(props: { budget: Budget, transactions: Transaction[] }) {
 
-    props.transactions.sort((a, b) => b.dueDate.getTime() - a.dueDate.getTime());
+    props.transactions.sort((a, b) => b.date.getTime() - a.date.getTime());
 
 
     return <Card className="flex flex-col w-fit ml-2 my-1">

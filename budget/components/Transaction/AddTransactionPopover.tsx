@@ -13,7 +13,7 @@ import { Switch } from "../ui/switch";
 export default function AddTransactionPopover(props: { budget: Budget, noTransactions?: boolean }) {
     const [name, setName] = useState('')
     const [value, setValue] = useState(0)
-    const [dueDate, setDueDate] = useState<Date>(new Date())
+    const [date, setdate] = useState<Date>(new Date())
     const [creating, setCreating] = useState(false)
     const [open, setOpen] = useState(false)
     const [account, setAccount] = useState<string>("")
@@ -70,12 +70,12 @@ export default function AddTransactionPopover(props: { budget: Budget, noTransac
                         />
                     </div>
                     <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="dueDate">Due Date</Label>
+                        <Label htmlFor="date">Due Date</Label>
                         <Input
-                            id="dueDate"
+                            id="date"
                             type="date"
-                            value={dueDate.toISOString().split('T')[0]}
-                            onChange={(e) => setDueDate(new Date(e.target.value))}
+                            value={date.toISOString().split('T')[0]}
+                            onChange={(e) => setdate(new Date(e.target.value))}
                             className="col-span-2 h-8"
                         />
                     </div>
@@ -85,11 +85,11 @@ export default function AddTransactionPopover(props: { budget: Budget, noTransac
                         disabled={creating || name == "" || value == 0 || account == ""}
                         onClick={async () => {
                             setCreating(true)
-                            createTransaction(name, type ? value : -value, dueDate, account, props.budget.id, "/budget/")
+                            createTransaction(name, type ? value : -value, date, account, props.budget.id, "/budget/")
                             setCreating(false)
                             setName("")
                             setValue(0)
-                            setDueDate(new Date())
+                            setdate(new Date())
                             setOpen(false)
                         }}
                     >

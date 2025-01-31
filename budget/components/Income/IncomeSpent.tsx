@@ -29,8 +29,9 @@ export default async function IncomeAllocations(props: { income: number, month: 
     }
 
     return <div className="flex flex-row w-full mt-1 min-w-[450px] items-center gap-2">
-        <div className="flex flex-row h-5 mt-1 w-[100%] bg-gray-600 rounded-full">
+        <div id="income-spent-allocation" className="flex flex-row h-5 mt-1 w-[100%] bg-gray-600 rounded-full">
             {allocationByBudgetGroup}
         </div>    
     </div>
+
 }

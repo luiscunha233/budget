@@ -32,7 +32,7 @@ export async function getTransactions(budgetId: string, startDate: Date, endDate
     let transactions = await prisma.transaction.findMany({
         where: {
             budgetId: budgetId,
-            dueDate: {
+            date: {
                 gte: startDate,
                 lte: endDate,
             },

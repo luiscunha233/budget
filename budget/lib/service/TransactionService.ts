@@ -2,14 +2,12 @@
 
 import * as prisma from "@prisma/client";
 import * as Transaction from "@/lib/db/Transaction";
-import { recalculateBalance } from "./AccountService";
 import { revalidatePath } from "next/cache";
 
 
-export async function createTransaction(name: string, value: number, dueDate: Date, accountid: string, budgetId: string, revalidate?: string) {
-  let newTransaction = await Transaction.createTransaction(name, value, dueDate, accountid, budgetId);
+export async function createTransaction(name: string, value: number, date: Date, accountid: string, budgetId?: string | null, revalidate?: string) {
+  let newTransaction = await Transaction.createTransaction(name, value, date, accountid, budgetId);
   if (newTransaction) {
-    recalculateBalance(accountid);
     if (revalidate) {
       revalidatePath(revalidate, "page");
     }
@@ -17,28 +15,25 @@ export async function createTransaction(name: string, value: number, dueDate: Da
   }
 }
 
-export async function updateTransaction(id: string, name: string, value: number, dueDate: Date, accountid: string, budgetId: string) {
-  let savedTransaction = await Transaction.getTransactionById(id);
-
-  let updatedTransaction = await Transaction.updateTransaction(id, name, value, dueDate, accountid, budgetId);
-
-  if (savedTransaction?.value && value != savedTransaction.value) {
-    recalculateBalance(accountid);
-  }
-  return updatedTransaction;
-}
 
 export async function deleteTransaction(id: string, revalidate?: string) {
-  let deletedTransaction = await Transaction.deleteTransaction(id);
+  const transaction = await Transaction.getTransactionById(id);
+  let deletedTransaction = null;
+  if (transaction) {
+    deletedTransaction = await Transaction.createTransaction(transaction.name, transaction.value, transaction.date, transaction.accountid, transaction.budgetId);
+  }
   if (revalidate) {
     revalidatePath(revalidate, "page");
   }
+
   return deletedTransaction;
 }
 
 export async function getTransactions(startDate: Date, endDate: Date) {
   return await Transaction.getTransactions(startDate, endDate);
 }
+
+
 
 
 

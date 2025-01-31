@@ -9,7 +9,6 @@ datasource db {
 
 model Account {
   id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  balanceDate     DateTime
   name            String
   type            String
   icon            String?

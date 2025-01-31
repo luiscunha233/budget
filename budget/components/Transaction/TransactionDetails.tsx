@@ -23,7 +23,7 @@ export default async function TransactionDetails(props: { transaction: Transacti
         <div className="flex flex-row items-center">
             <div className="flex flex-col items-end">
                 <div >{parseFloat(props.transaction.value.toFixed(2))}€</div>
-                <div className="text-xs text-gray-400">{props.transaction.dueDate.toLocaleDateString()}</div>
+                <div className="text-xs text-gray-400">{props.transaction.date.toLocaleDateString()}</div>
             </div>
             <div className="ml-2">
                 <RemoveTransactionDropdown transaction={props.transaction} />

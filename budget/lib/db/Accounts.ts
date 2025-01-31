@@ -1,23 +1,14 @@
 import prisma from "@/lib/db/prisma";
     
 
-export async function createAccount(name: string, type: string) {
-    let newAccount = await prisma.account.create({data: {name, type, currentBalance: 0, creationBalance: 0,balanceDate:new Date()}});
+export async function createAccount(name: string, type: string, icon: string) {
+    let newAccount = await prisma.account.create({data: {name, type, icon}});
     return newAccount;
 }
 
-export async function createAccountWithBalance(name: string, type: string, currentBalance: number) {
-    let newAccount = await prisma.account.create({data: {name, type, currentBalance: currentBalance, creationBalance: currentBalance,balanceDate:new Date()}});
-    return newAccount;
-}
 
-export async function updateAccount(id: string,name: string, type: string, currentBalance: number) {
-    let updatedAccount = await prisma.account.update({where: {id}, data: {name, type, currentBalance}});
-    return updatedAccount;
-}
-
-export async function updateBalance(id: string, newBalance: number) {
-    let updatedAccount = await prisma.account.update({where: {id}, data: {currentBalance: newBalance, balanceDate: new Date()}});
+export async function updateAccount(id: string,name: string, type: string) {
+    let updatedAccount = await prisma.account.update({where: {id}, data: {name, type}});
     return updatedAccount;
 }
 
@@ -29,12 +20,13 @@ export async function deleteAccount(id: string) {
 export async function getTransactions(accountId: string, startDate: Date, endDate: Date) {
     if(!accountId) {
         return [];
+
     }
 
     let transactions = await prisma.transaction.findMany({
         where: {
             accountid: accountId,
-            dueDate: {
+            date: {
                 gte: startDate,
                 lte: endDate,
             },
@@ -64,16 +56,32 @@ export async function getLatestAccountTransactions(accountId: string, numberofTr
         },
         take: numberofTransactions,
         orderBy: {
-            dueDate: 'desc',
+            date: 'desc',
         },
     });
     return transactions;
+}
+
+export async function getAccountBalance(accountId: string) {
+    let account = await prisma.account.findUnique({
+        where: { id: accountId },
+        include: {
+            Transactions: {
+                orderBy: {
+                    date: 'desc'
+                },
+                take: 1
+            }
+        }
+    });
+    return account?.Transactions[0]?.balance ?? 0;
 }
 
 export async function getAllAccountTransaction(id: string){
     let account = await prisma.account.findUnique({where: {id},include:{Transactions: true}});
     return account?.Transactions;
 }
+
 
 
 export async function getAllAccounts() {
