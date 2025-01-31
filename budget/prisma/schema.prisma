@@ -9,11 +9,10 @@ datasource db {
 
 model Account {
   id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  creationBalance Float
-  currentBalance  Float
   balanceDate     DateTime
   name            String
   type            String
+  icon            String?
   Transactions    Transaction[]
 }
 
@@ -29,7 +28,7 @@ model Budget {
   startDate     DateTime
   endDate       DateTime
   icon          String?
-  goal          Int
+  goal          Float
   name          String
   Transactions  Transaction[]
   BudgetGroup   BudgetGroup?  @relation(fields: [budgetGroupId], references: [id])
@@ -42,9 +41,10 @@ model Transaction {
   account   Account  @relation(fields: [accountid], references: [id])
   budgetId  String?   @db.ObjectId
   budget    Budget?  @relation(fields: [budgetId], references: [id])
-  dueDate   DateTime
+  date   DateTime
   name      String
-  value     Int
+  value     Float
+  balance   Float
 }
 
 model Investment {
